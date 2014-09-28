@@ -37,15 +37,18 @@ class Parser
 				@position += 1
 				skip_white_space()
 				nodeType = consume_word()
-				if nodeType.eql? "img"
-					#TODO handle img tag
-					puts "img"
-				else
-					nodeAttributes = consume_attributes()
-					node = Node.new(nodeType, nodeAttributes)
+				nodeAttributes = consume_attributes()
+				node = Node.new(nodeType, nodeAttributes)
+				skip_white_space()
+				if @fileString[@position].eql? "/" and @fileString[@position+1].eql? ">"
+					#case < .. /> tag type
+					@position += 2
 					skip_white_space()
-					#HANDLE non closing tags here
-					while not is_at_closing_of_element()
+				else
+					#case < .. > </ .. > tag type
+					@position += 1
+					skip_white_space()
+					while @position < @fileString.length and not is_at_closing_of_element()
 						skip_white_space()
 						node.add_child(parse_node_rec())
 					end
@@ -74,11 +77,9 @@ class Parser
 		def consume_attributes()
 			#TODO actually consume attributes
 			skip_white_space()
-			while not @fileString[@position].eql? ">"
+			while not (@fileString[@position].eql? ">" or (@fileString[@position].eql? "/" and @fileString[@position+1].eql? ">") )
 				@position += 1
 			end
-			#skip over the >
-			@position += 1
 			{}
 		end
 
@@ -104,13 +105,12 @@ class Parser
 		end
 
 		def is_at_closing_of_element()
-			#TODO support closing tags of type < / img>
-			return ( @position < @fileString.length and @fileString[@position].eql? "<" and @fileString[@position+1].eql? "/" )
+			return (@fileString[@position].eql? "<" and @fileString[@position+1].eql? "/" )
 		end
 
 		def skip_white_space()
 			while @position < @fileString.length
-				if @fileString[@position] =~ /\s/
+				if @fileString[@position] =~ /\s|\n|\t/
 					@position+=1
 				else
 					return
