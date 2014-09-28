@@ -1,0 +1,165 @@
+
+<html>
+    <head>
+        
+        <script type="text/javascript" src="cordova-2.2.0.js"></script>
+        <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.2.0.js"></script>
+        <script type="text/javascript" src="js/cdv-plugin-fb-connect.js"></script>
+        <script type="text/javascript" src="js/facebook_js_sdk.js"></script>
+        <script type="text/javascript" src="js/AudioEncode.js"></script>
+        <script type="text/javascript" src="js/listing.js"></script>
+        
+        
+        
+        
+        
+        
+        
+        
+        <title>PM</title>
+    </head>
+    <body>
+        <div id="loading" data-role="page"></div>
+        
+        <div data-role="page" id="one">
+            <div data-role="header">
+                <h1> My Title </h1>
+            </div>
+            <div data-role="content">
+                <p>Hello world</p>
+                <p><a href="#startPage" data-role="button">Start Page</a></p>
+                <p><a href="#record" data-role="button">Record joke</a></p>
+                <p><a href="#play" data-role="button">play joke</a></p>
+                <p><a href="#contacts" data-role="button">Contacts</a></p>
+                <p><a href="#jokeCreate" data-role="button">Create joke</a></p>
+                <p><a href="#jokeList" data-role="button">Joke List</a></p>
+                <p><a href="#uploadPage" data-role="button">Upload</a></p>
+                <button onclick="playStream()">Listen Live</button>
+                <button onclick="stopStream()">Stop</button>
+                
+            </div>
+        </div>
+        
+        
+        <div data-role="page" id="startPage">
+            <div data-role="header" data-position="fixed">
+                <a href="#one" data-role="button"  data-icon="arrow-l">Back</a>
+                
+                <h1>Welcome</h1>
+            </div>
+            <div data-role="content" >
+                <div id="fb-root"></div>
+                <button  id="fbLogin">Login with Facebook</button>
+                <button type="button" data-theme="a" onclick="getLoginStatus()">Get login</button>
+                
+            </div>
+        </div>
+        
+        
+        
+        
+        <div data-role="page" id="record">
+            <div data-role="header" data-position="fixed">
+                <a href="#one" data-role="button" data-rel="back" data-icon="arrow-l">Back</a>
+                
+                <h1>Record</h1>
+            </div>
+            <div data-role="content" >
+                <a href="" data-role="button" data-inline="true" id="startButton">Start</a>
+                <a href="" data-role="button" data-inline="true" id="stopButton">Stop</a>
+                <div id="recDisplay"> not recording... </div>
+            </div>
+        </div>
+        
+        <div data-role="page" id="play">
+            <div data-role="header" data-position="fixed">
+                <a href="#one" data-role="button" data-rel="back" data-icon="arrow-l">Back</a>
+                
+                <h1>play</h1>
+            </div>
+            <div data-role="content" >
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="fileToPlay">Name:</label>
+                    
+                </div>
+                <button type="button" id="playButton" data-theme="d">Play</button>
+            </div>
+        </div>
+        
+        
+        <div data-role="page" id="contacts">
+            <div data-role="header" data-position="fixed">
+                <a href="#one" data-role="button" data-rel="back" data-icon="arrow-l">Back</a>
+                
+                <h1>Test</h1>
+            </div>
+            <div data-role="content" >
+                
+            </div>
+        </div>
+        
+        <div data-role="page" id="jokeCreate">
+            <div data-role="header">
+                <a href="#one" data-role="button" data-rel="back" data-icon="arrow-l">Back</a>
+                
+                <h1 id="name"> Create a joke</h1>
+            </div>
+            <div data-role="content">
+                <form action="#" method="get">
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <label for="jokeName">Name:</label>
+                    </div>
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <label for="fileName">File:</label>
+                    </div>
+                    <div class="ui-body ui-body-b">
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a"><button type="submit" data-theme="d">Cancel</button></div>
+                            <div class="ui-block-b"><button type="button" data-theme="a" id="jokeSubmit">Submit</button></div>
+                        </fieldset>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div data-role="page" id="jokeList">
+            <div data-role="header" data-position="fixed">
+                <a href="#one" data-role="button" data-rel="back" data-icon="arrow-l" >Back</a>
+                
+                <h1>SO FUNNY!!!</h1>
+            </div>
+            <div data-role="content">
+                
+                <ul id='jokeListing' data-role='listview' >
+                    
+                </ul>
+            </div>
+        </div>
+        
+        <div data-role="page" id="uploadPage">
+            <div data-role="header" data-position="fixed">
+                <a href="#one" data-role="button"  data-icon="arrow-l">Back</a>
+                
+                <h1>Welcome</h1>
+            </div>
+            <div data-role="content" >
+                <form>
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <label for="jName">Name:</label>
+                    </div>
+                    <button id="recButtonToUpload">Record</button>
+                    <button id="uploadButton">Submit</button>
+                    <p id="tleft">time left</p>
+                    
+                </form>
+                
+                
+            </div>
+        </div>
+        
+        
+    </body>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/upload.js"></script>
+</html>
