@@ -5,14 +5,16 @@ require_relative 'node/HTMLNode'
 
 
 def runEngine(fileName)
-	parser = Parser.new(fileName)
-	parser.read_file()
-	parser.parse()	
+	
+	htmlparser = HTMLParser.new(fileName)
+	htmlparser.read_file()
+	htmlTree = htmlparser.parse()
+	puts htmlTree	
 end
 
 
 if __FILE__ == $0
-  puts "Launching Engine"
+  puts "Initialized Engine \n+++++++++++++++++++++++++++++++++++++++++++"
   ARGV.each do |fileName|
   	runEngine(fileName)
   end

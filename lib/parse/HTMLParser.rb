@@ -1,7 +1,6 @@
-class Parser
+class HTMLParser
 	attr_accessor :name, :fileString, :position
 	def initialize(input_name)
-		puts "Initialized parser \n+++++++++++++++++++++++++++++++++++++++++++"
 		@name = input_name
 		@position = 0
 		@fileString = ''
@@ -20,7 +19,7 @@ class Parser
 		skip_white_space()
 		if is_at_beginning_of_element()
 			htmlNode = parse_node_rec()
-			htmlNode.print()
+			return htmlNode
 		else
 			raise "Malformed HTML"
 		end
@@ -94,8 +93,6 @@ class Parser
 			@position += 1 #skip =
 			skip_white_space()
 			value = consume_attribute_value()
-			puts identifier
-			puts value
 			return [identifier, value]
 		end
 
