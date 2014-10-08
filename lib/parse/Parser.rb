@@ -9,7 +9,7 @@ class Parser
 
 	def read_file()
 		fileObj = File.new(@name, "r")
-		#TO DO: rather than concatenate the whole file in RAM, read line by line and use stack for parsing
+		#TO DO: rather than concatenate the whole file in RAM, read line by line 
 		fileObj.each_line do |line|
 			@fileString += line
 		end
@@ -67,7 +67,7 @@ class Parser
 
 		def consume_text()
 			text = ""
-			while @fileString[@position] =~ /[[:alpha:]]|[[:digit:]]|\s|\.|\-|\*|\,|\:|\!/
+			while @fileString[@position] =~ /[[:alpha:]]|[[:digit:]]|\s|\.|\-|\*|\,|\:|\!|\?/
 				text += @fileString[@position]
 				@position += 1
 			end
@@ -75,12 +75,53 @@ class Parser
 		end
 
 		def consume_attributes()
+			attributes = {}
 			#TODO actually consume attributes
 			skip_white_space()
 			while not (@fileString[@position].eql? ">" or (@fileString[@position].eql? "/" and @fileString[@position+1].eql? ">") )
-				@position += 1
+				tuple = consume_attribute_pair()
+				attributes[tuple[0]] = tuple[1]
+				skip_white_space()
 			end
-			{}
+			attributes
+		end
+
+		def consume_attribute_pair()
+			#TODO handle bad input
+
+			identifier = consume_word()
+			skip_white_space()
+			@position += 1 #skip =
+			skip_white_space()
+			value = consume_attribute_value()
+			puts identifier
+			puts value
+			return [identifier, value]
+		end
+
+		def consume_attribute_value()
+
+			if @fileString[@position].eql? '"'
+				@position += 1
+				value = ""
+				while not @fileString[@position].eql? '"'
+					value += @fileString[@position]
+					@position += 1
+				end
+				@position += 1 #skip over "
+				return value
+			end
+			if @fileString[@position].eql? "'"
+				@position += 1
+				value = ""
+				while not @fileString[@position].eql? "'"
+					value += @fileString[@position]
+					@position += 1
+				end
+				@position += 1 #skip over '
+				return value
+			end
+			raise "Malformed identifier expression"
 		end
 
 		def consume_closing_tag()
@@ -99,7 +140,6 @@ class Parser
 			word
 		end
 
-		
 		def is_at_beginning_of_element()
 			return ( @position < @fileString.length and @fileString[@position].eql? "<" and ! @fileString[@position+1].eql? "/" )
 		end

@@ -40,6 +40,12 @@ class Node
 			i += 1
 		end
 		puts indent_string + @node_type
+		#print attributes
+		if not @attributes.nil?
+			@attributes.each do |key, value|
+				puts indent_string + key + " " + value
+			end
+		end
 		if not self.children.nil? and self.children.length > 0
 			for child in self.children
 				child.print_recursive(indent+1)
