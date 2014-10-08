@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
-require_relative 'parse/Parser'
-require_relative 'node/Node'
+require_relative 'parse/HTMLParser'
+require_relative 'node/HTMLNode'
 
 
 
