@@ -1,7 +1,7 @@
 class HTMLParser
   attr_accessor :name, :fileString, :position
-  def initialize(input_name)
-  	@name = input_name
+  def initialize(file_path)
+  	@name = file_path
   	@fr = FileReader.new(@name)
   end
 

@@ -4,12 +4,12 @@ class Node
   def initialize(name, attrs = nil, childr = nil, txt = nil)
     @node_type = name
     if name.eql? "text"
-      # text node
+      # case text node
       @text = txt
       @attributes = nil
       @children = nil
     else
-      #element node
+      # case element node
       @text = txt
       if childr.nil?
         @children = []
