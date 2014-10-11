@@ -1,157 +1,148 @@
 class HTMLParser
-	attr_accessor :name, :fileString, :position
-	def initialize(input_name)
-		@name = input_name
-		@position = 0
-		@fileString = ''
-	end
+  attr_accessor :name, :fileString, :position
+  def initialize(input_name)
+  	@name = input_name
+  	@fr = FileReader.new(@name)
+  end
 
-	def read_file()
-		fileObj = File.new(@name, "r")
-		#TO DO: rather than concatenate the whole file in RAM, read line by line 
-		fileObj.each_line do |line|
-			@fileString += line
-		end
-		fileObj.close
-	end
+  def parse()
+  	skip_white_space()
+  	if is_at_beginning_of_element()
+  		htmlNode = parse_node_rec()
+  		return htmlNode
+  	else
+  		raise "Malformed HTML"
+  	end
+  end
 
-	def parse()
+  private 
+  	
+	def parse_node_rec()
+		node = nil
 		skip_white_space()
-		if is_at_beginning_of_element()
-			htmlNode = parse_node_rec()
-			return htmlNode
+		if @fr.current_char().eql? "<"
+			#case it is an element
+			#skip <
+			@fr.consume_next_obl()
+			skip_white_space()
+			nodeType = consume_word()
+			nodeAttributes = consume_attributes()
+			node = Node.new(nodeType, nodeAttributes)
+			skip_white_space()
+			if @fr.current_char().eql? "/" and @fr.next_char().eql? ">"
+				#case < .. /> tag type
+				@fr.consume_next_obl()
+        @fr.consume_next_obl()
+				skip_white_space()
+			else
+				#case < .. > </ .. > tag type
+        @fr.consume_next_obl()
+				skip_white_space()
+				while @fr.has_next() and not is_at_closing_of_element()
+					skip_white_space()
+					node.add_child(parse_node_rec())
+				end
+				#TODO assert that closing tag is of right type
+				consume_closing_tag()
+				skip_white_space()
+			end
 		else
-			raise "Malformed HTML"
+			#case it is a text node
+			nodeText = consume_text()
+			node = Node.new("text", nil, nil, nodeText)
+			skip_white_space()
 		end
+		node
 	end
 
-	private 
-		
-		def parse_node_rec()
-			node = nil
+	def consume_text()
+		text = ""
+		while @fr.has_next() and
+      @fr.current_char() =~ /[[:alpha:]]|[[:digit:]]|\s|\.|\-|\*|\,|\:|\!|\?/
+			text += @fr.current_char()
+			@fr.consume_next_obl()
+		end
+		text
+	end
+
+	def consume_attributes()
+		attributes = {}
+		#TODO actually consume attributes
+		skip_white_space()
+		while not (@fr.current_char().eql? ">" or (@fr.current_char().eql? "/" and @fr.next_char().eql? ">") )
+			tuple = consume_attribute_pair()
+			attributes[tuple[0]] = tuple[1]
 			skip_white_space()
-			if @fileString[@position].eql? "<"
-				#case it is an element
-				#skip <
-				@position += 1
-				skip_white_space()
-				nodeType = consume_word()
-				nodeAttributes = consume_attributes()
-				node = Node.new(nodeType, nodeAttributes)
-				skip_white_space()
-				if @fileString[@position].eql? "/" and @fileString[@position+1].eql? ">"
-					#case < .. /> tag type
-					@position += 2
-					skip_white_space()
-				else
-					#case < .. > </ .. > tag type
-					@position += 1
-					skip_white_space()
-					while @position < @fileString.length and not is_at_closing_of_element()
-						skip_white_space()
-						node.add_child(parse_node_rec())
-					end
-					#TODO assert that closing tag is of right type
-					consume_closing_tag()
-					skip_white_space()
-				end
+		end
+		attributes
+	end
+
+	def consume_attribute_pair()
+		#TODO handle bad input
+
+		identifier = consume_word()
+		skip_white_space()
+		@fr.consume_next_obl() #skip =
+		skip_white_space()
+		value = consume_attribute_value()
+		return [identifier, value]
+	end
+
+	def consume_attribute_value()
+
+		if @fr.current_char().eql? '"'
+			@fr.consume_next_obl()
+			value = ""
+			while not @fr.current_char().eql? '"'
+				value += @fr.consume_and_advance()
+			end
+			@fr.consume_next_obl() #skip over "
+			return value
+		end
+		if @fr.current_char().eql? "'"
+			@fr.consume_next_obl()
+			value = ""
+			while not @fr.current_char().eql? "'"
+				value += @fr.consume_and_advance()
+			end
+			@fr.consume_next_obl() #skip over '
+			return value
+		end
+		raise "Malformed identifier expression"
+	end
+
+	def consume_closing_tag()
+		while not @fr.current_char().eql? ">"
+			@fr.consume_next_obl()
+		end
+    if @fr.has_next
+      @fr.consume_next_obl()  
+    end
+	end
+
+	def consume_word()
+		word = ""
+		while @fr.has_next() and @fr.current_char() =~ /[[:alpha:]]|[[:digit:]]|_/
+			word += @fr.consume_and_advance()
+		end
+		word
+	end
+
+	def is_at_beginning_of_element()
+		return ( @fr.has_next() and @fr.current_char().eql? "<" and ! @fr.next_char().eql? "/" )
+	end
+
+	def is_at_closing_of_element()
+		return (@fr.current_char().eql? "<" and @fr.next_char().eql? "/" )
+	end
+
+	def skip_white_space()
+		while @fr.has_next()
+			if @fr.current_char() =~ /\s|\n|\t/
+				@fr.consume_next_obl()
 			else
-				#case it is a text node
-				nodeText = consume_text()
-				node = Node.new("text", nil, nil, nodeText)
-				skip_white_space()
-			end
-			node
-		end
-
-		def consume_text()
-			text = ""
-			while @fileString[@position] =~ /[[:alpha:]]|[[:digit:]]|\s|\.|\-|\*|\,|\:|\!|\?/
-				text += @fileString[@position]
-				@position += 1
-			end
-			text
-		end
-
-		def consume_attributes()
-			attributes = {}
-			#TODO actually consume attributes
-			skip_white_space()
-			while not (@fileString[@position].eql? ">" or (@fileString[@position].eql? "/" and @fileString[@position+1].eql? ">") )
-				tuple = consume_attribute_pair()
-				attributes[tuple[0]] = tuple[1]
-				skip_white_space()
-			end
-			attributes
-		end
-
-		def consume_attribute_pair()
-			#TODO handle bad input
-
-			identifier = consume_word()
-			skip_white_space()
-			@position += 1 #skip =
-			skip_white_space()
-			value = consume_attribute_value()
-			return [identifier, value]
-		end
-
-		def consume_attribute_value()
-
-			if @fileString[@position].eql? '"'
-				@position += 1
-				value = ""
-				while not @fileString[@position].eql? '"'
-					value += @fileString[@position]
-					@position += 1
-				end
-				@position += 1 #skip over "
-				return value
-			end
-			if @fileString[@position].eql? "'"
-				@position += 1
-				value = ""
-				while not @fileString[@position].eql? "'"
-					value += @fileString[@position]
-					@position += 1
-				end
-				@position += 1 #skip over '
-				return value
-			end
-			raise "Malformed identifier expression"
-		end
-
-		def consume_closing_tag()
-			while not @fileString[@position].eql? ">"
-				@position += 1
-			end
-			@position += 1
-		end
-
-		def consume_word()
-			word = ""
-			while @position < @fileString.length and @fileString[@position] =~ /[[:alpha:]]|[[:digit:]]|_/
-				word += @fileString[@position]
-				@position += 1
-			end
-			word
-		end
-
-		def is_at_beginning_of_element()
-			return ( @position < @fileString.length and @fileString[@position].eql? "<" and ! @fileString[@position+1].eql? "/" )
-		end
-
-		def is_at_closing_of_element()
-			return (@fileString[@position].eql? "<" and @fileString[@position+1].eql? "/" )
-		end
-
-		def skip_white_space()
-			while @position < @fileString.length
-				if @fileString[@position] =~ /\s|\n|\t/
-					@position+=1
-				else
-					return
-				end
+				return
 			end
 		end
+  end
 end

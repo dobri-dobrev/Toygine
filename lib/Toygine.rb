@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 require_relative 'parse/HTMLParser'
 require_relative 'node/HTMLNode'
+require_relative 'util/FileReader'
 
 
 
 def runEngine(htmlFileName, cssFileName)
 	
 	htmlparser = HTMLParser.new(htmlFileName)
-	htmlparser.read_file()
 	htmlTree = htmlparser.parse()
 	puts htmlTree	
 end
