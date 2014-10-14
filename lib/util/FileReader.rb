@@ -11,6 +11,24 @@ class FileReader
       @eof = true
     end
   end
+  
+  def skip_white_space()
+    while has_next()
+      if current_char() =~ /\s|\n|\t/
+        consume_next_obl()
+      else
+        return
+      end
+    end
+  end
+
+  def consume_word()
+    word = ""
+    while has_next() and current_char() =~ /[[:alpha:]]|[[:digit:]]|_/
+      word += consume_and_advance()
+    end
+    word
+  end
 
   def consume_and_advance
     char = current_char()
@@ -19,7 +37,6 @@ class FileReader
   end
 
   def consume_next_obl
-    char = ''
     if @cursor + 1 < @len
       @cursor += 1
       char = @line[@cursor]

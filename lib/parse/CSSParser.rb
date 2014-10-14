@@ -3,6 +3,7 @@ class CSSParser
     @fr = FileReader.new(file_path)
   end
   def parse
-    puts "winning!!!"
+    @fr.skip_white_space()
+    
   end
 end
