@@ -2,6 +2,8 @@
 require_relative 'parse/HTMLParser'
 require_relative 'node/HTMLNode'
 require_relative 'util/FileReader'
+require_relative 'parse/CSSParser'
+require_relative 'node/CSSSelector'
 
 
 

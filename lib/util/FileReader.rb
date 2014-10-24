@@ -12,7 +12,7 @@ class FileReader
     end
   end
   
-  def skip_white_space()
+  def skip_white_space
     while has_next()
       if current_char() =~ /\s|\n|\t/
         consume_next_obl()
@@ -22,7 +22,7 @@ class FileReader
     end
   end
 
-  def consume_word()
+  def consume_word
     word = ""
     while has_next() and current_char() =~ /[[:alpha:]]|[[:digit:]]|_/
       word += consume_and_advance()
@@ -44,7 +44,7 @@ class FileReader
     else
       @cursor += 1
       if @file.eof?
-        raise "Malformed input"
+        raise "Malformed input in " + @path
       end
       @line = @file.readline()
       @len = @line.length
@@ -61,7 +61,7 @@ class FileReader
     if has_next() && @cursor + 1 < @len
       return @line[@cursor + 1]
     end
-    raise "Malformed input"
+    raise "Malformed input in " + @path
   end
   
   def has_next

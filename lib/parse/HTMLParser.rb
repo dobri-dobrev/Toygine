@@ -11,7 +11,7 @@ class HTMLParser
   		htmlNode = parse_node_rec()
   		return htmlNode
   	else
-  		raise "Malformed HTML"
+  		raise "Malformed HTML in " + @name
   	end
   end
 
@@ -107,7 +107,7 @@ class HTMLParser
 			@fr.consume_next_obl() #skip over '
 			return value
 		end
-		raise "Malformed identifier expression"
+		raise "Malformed identifier expression in " + @name
 	end
 
 	def consume_closing_tag()

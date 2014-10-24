@@ -1,6 +1,7 @@
 require 'test/unit'
 require_relative '../lib/parse/CSSParser'
 require_relative '../lib/util/FileReader'
+require_relative '../lib/node/CSSSelector'
 
 class CssParserTest <Test::Unit::TestCase
   def test_initial
