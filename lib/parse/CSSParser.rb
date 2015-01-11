@@ -16,12 +16,13 @@ class CSSParser
   def parse_rule
     @fr.skip_white_space()
     rule = CSSRule.new()
-    rule.add_selector( parse_selector() )
+    rule.set_selector( parse_selector() )
     @fr.skip_white_space()
     @fr.consume_next_obl() # skip {
     @fr.skip_white_space()
     while ! @fr.current_char.eql? '}'
       rule.add_declaration( parse_declaration() )
+      @fr.skip_white_space()
     end
     if @fr.has_next()
       @fr.consume_next_obl()  #skip }
@@ -30,19 +31,22 @@ class CSSParser
   end
 
   def parse_selector
-    selectors = CSSSelector.new()
-    if @fr.current_char().eql? "#"
-      @fr.consume_next_obl()
-      selectors.add_tag(CSSSelectorType::ID, @fr.consume_word())
-    elsif @fr.current_char().eql? "."
-      @fr.consume_next_obl()
-      selectors.add_tag(CSSSelectorType::CLASS, @fr.consume_word())
-    elsif @fr.current_char().eql? "*"
-      @fr.consume_next_obl()
-    elsif @fr.current_char() =~ /[[alpha]]/
-      selectors.add_tag(CSSSelectorType::TAG_NAME, @fr.consume_word())
+    selector = CSSSelector.new()
+    while ! @fr.current_char.eql? '{'
+      if @fr.current_char().eql? "#"
+        @fr.consume_next_obl()
+        selector.add_tag( CSSSelectorType::ID, @fr.consume_word() )
+      elsif @fr.current_char().eql? "."
+        @fr.consume_next_obl()
+        selector.add_tag( CSSSelectorType::CLASS, @fr.consume_word() )
+      elsif @fr.current_char().eql? "*"
+        @fr.consume_next_obl()
+      elsif @fr.current_char() =~ /[[alpha]]/
+        selector.add_tag( CSSSelectorType::TAG_NAME, @fr.consume_word() )
+      end
+      @fr.skip_white_space()
     end
-    return selectors
+    return selector
   end
 
   def parse_declaration
@@ -57,7 +61,6 @@ class CSSParser
       value = parse_length()
     end
     @fr.consume_next_obl() # skip ;
-    @fr.skip_white_space()
     return CSSDeclaration.new(name, value)
   end
   
