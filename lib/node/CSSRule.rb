@@ -19,7 +19,7 @@ class CSSRule
     end
     out += "\n"
     for d in @declarations
-      out += d.name + "\n"
+      out += d.name + " " + d.value.type + "\n"
     end
     out += "\n"
   end

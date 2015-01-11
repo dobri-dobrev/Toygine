@@ -15,7 +15,6 @@ class CSSParser
 
   def parse_rule
     @fr.skip_white_space()
-    puts "parse rule " + @fr.current_char()
     rule = CSSRule.new()
     rule.add_selector( parse_selector() )
     @fr.skip_white_space()
@@ -58,7 +57,7 @@ class CSSParser
     when "#"
       value = parse_color()
     when '0'..'9'
-      value = "color"
+      value = parse_length()
     end
     @fr.consume_next_obl() # skip ;
     @fr.skip_white_space()
@@ -73,6 +72,15 @@ class CSSParser
     g += @fr.consume_and_advance()
     b = @fr.consume_and_advance()
     b += @fr.consume_and_advance()
-    return CSSValue.new(CSSValueType::COLORVALUE, {:r => r, :g => g, :b => b})
+    return CSSValue.new(CSSValueType::COLORVALUE, {:r => r.to_i, :g => g.to_i, :b => b.to_i})
+  end
+
+  def parse_length()
+    num = ""
+    while @fr.current_char() =~ /[[:digit:]]/
+      num += @fr.consume_and_advance()
+    end
+    unit = @fr.consume_word()
+    return CSSValue.new(CSSValueType::LENGTH, {:length => num.to_i, :unit => unit})
   end
 end

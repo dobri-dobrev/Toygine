@@ -9,13 +9,13 @@ class CSSSelector
 	def to_s
 		out = ""
 		unless @id.nil? 
-			out += "id: "+ @id 
+			out += "id: " + @id 
 		end
 		unless @class.nil? 
-			out += "class: "+ @class
+			out += "class: " + @class
 		end
 		unless @tag_type.nil? 
-			out += "tag_type: "+ @tag_type 
+			out += "tag_type: " + @tag_type 
 		end
 		return out
 	end
