@@ -44,7 +44,7 @@ class CSSParser
       elsif @fr.current_char() =~ /[[alpha]]/
         selector.add_tag( CSSSelectorType::TAG_NAME, @fr.consume_word() )
       else
-        raise "Malformed selector expression in " + @path
+        raise "Malformed selector expression in " + @file_path
       end
       @fr.skip_white_space()
     end
