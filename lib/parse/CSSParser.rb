@@ -30,22 +30,19 @@ class CSSParser
   end
 
   def parse_selector
+    selectors = CSSSelector.new()
     if @fr.current_char().eql? "#"
       @fr.consume_next_obl()
-      return CSSSelector.new(@fr.consume_word(), nil, nil)
-    end
-    if @fr.current_char().eql? "."
+      selectors.add_tag(CSSSelectorType::ID, @fr.consume_word())
+    elsif @fr.current_char().eql? "."
       @fr.consume_next_obl()
-      return CSSSelector.new(nil, @fr.consume_word(), nil)
-    end
-    if ! @fr.current_char().eql? "{"
-      return CSSSelector.new(nil, nil, @fr.consume_word())
-    end
-    if @fr.current_char().eql? "*"
+      selectors.add_tag(CSSSelectorType::CLASS, @fr.consume_word())
+    elsif @fr.current_char().eql? "*"
       @fr.consume_next_obl()
-      return CSSSelector.new(nil, "*", nil)
+    elsif @fr.current_char() =~ /[[alpha]]/
+      selectors.add_tag(CSSSelectorType::TAG_NAME, @fr.consume_word())
     end
-    raise "Malformed CSS in " + @file_path
+    return selectors
   end
 
   def parse_declaration

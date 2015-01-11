@@ -1,23 +1,42 @@
 class CSSSelector
-	attr_accessor :id, :class, :tag_type
-	def initialize(i , c , t )
-		@id = i
-		@class = c
-		@tag_type = t
+	attr_accessor :ids, :classes, :tag_names
+	def initialize
+		@ids = []
+		@classes = []
+		@tag_names = []
+	end
+
+	def add_tag(type, tag)
+		case type
+		when CSSSelectorType::ID
+			@ids.push(tag)
+		when CSSSelectorType::CLASS
+			@classes.push(tag)
+		when CSSSelectorType::TAG_NAME
+			@tag_names.push(tag)
+		end	
 	end
 
 	def to_s
 		out = ""
-		unless @id.nil? 
-			out += "id: " + @id 
+		for id in @ids
+			out += id + " "
 		end
-		unless @class.nil? 
-			out += "class: " + @class
+		for classe in @classes
+			out += classe + " "
 		end
-		unless @tag_type.nil? 
-			out += "tag_type: " + @tag_type 
+		for tag_name in @tag_names
+			out += tag_name + " "
+		end
+		if out.eql? ""
+			out = "empty selector"
 		end
 		return out
 	end
 end
 
+module CSSSelectorType
+	ID = "id"
+	CLASS = "class"
+	TAG_NAME = "tag_name"
+end
