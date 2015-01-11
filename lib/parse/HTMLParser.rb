@@ -32,11 +32,11 @@ class HTMLParser
 			if @fr.current_char().eql? "/" and @fr.next_char().eql? ">"
 				#case < .. /> tag type
 				@fr.consume_next_obl()
-        @fr.consume_next_obl()
+        		@fr.consume_next_obl()
 				@fr.skip_white_space()
 			else
 				#case < .. > </ .. > tag type
-        @fr.consume_next_obl()
+        		@fr.consume_next_obl()
 				@fr.skip_white_space()
 				while @fr.has_next() and not is_at_closing_of_element()
 					@fr.skip_white_space()
@@ -114,7 +114,7 @@ class HTMLParser
 		while not @fr.current_char().eql? ">"
 			@fr.consume_next_obl()
 		end
-    if @fr.has_next
+    if @fr.has_next()
       @fr.consume_next_obl()  
     end
 	end

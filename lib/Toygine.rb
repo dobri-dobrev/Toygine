@@ -1,9 +1,14 @@
 #!/usr/bin/env ruby
+require_relative 'util/FileReader'
+
 require_relative 'parse/HTMLParser'
 require_relative 'node/HTMLNode'
-require_relative 'util/FileReader'
+
 require_relative 'parse/CSSParser'
 require_relative 'node/CSSSelector'
+require_relative 'node/CSSRule'
+require_relative 'node/CSSDeclaration'
+require_relative 'node/CSSValue'
 
 
 

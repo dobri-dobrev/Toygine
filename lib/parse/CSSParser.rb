@@ -5,13 +5,29 @@ class CSSParser
   end
   def parse
     @fr.skip_white_space()
-    @ss = []
-    # while @fr.has_next()
-      selector = parse_selector()
+    @cr = []
+    while @fr.has_next()
+      @cr.push( parse_rule() )
       @fr.skip_white_space()
-      @fr.consume_next_obl() # skip {
-      @fr.skip_white_space()
-    # end
+    end
+    return @cr
+  end
+
+  def parse_rule
+    @fr.skip_white_space()
+    puts "parse rule " + @fr.current_char()
+    rule = CSSRule.new()
+    rule.add_selector( parse_selector() )
+    @fr.skip_white_space()
+    @fr.consume_next_obl() # skip {
+    @fr.skip_white_space()
+    while ! @fr.current_char.eql? '}'
+      rule.add_declaration( parse_declaration() )
+    end
+    if @fr.has_next()
+      @fr.consume_next_obl()  #skip }
+    end
+    return rule
   end
 
   def parse_selector
@@ -31,5 +47,32 @@ class CSSParser
       return CSSSelector.new(nil, "*", nil)
     end
     raise "Malformed CSS in " + @file_path
+  end
+
+  def parse_declaration
+    @fr.skip_white_space()
+    name = @fr.consume_word()
+    @fr.consume_next_obl() # skip :
+    @fr.skip_white_space()
+    case @fr.current_char()
+    when "#"
+      value = parse_color()
+    when '0'..'9'
+      value = "color"
+    end
+    @fr.consume_next_obl() # skip ;
+    @fr.skip_white_space()
+    return CSSDeclaration.new(name, value)
+  end
+  
+  def parse_color()
+    @fr.consume_next_obl() # skip #
+    r = @fr.consume_and_advance()
+    r += @fr.consume_and_advance()
+    g = @fr.consume_and_advance()
+    g += @fr.consume_and_advance()
+    b = @fr.consume_and_advance()
+    b += @fr.consume_and_advance()
+    return CSSValue.new(CSSValueType::COLORVALUE, {:r => r, :g => g, :b => b})
   end
 end

@@ -1,11 +1,15 @@
 require 'test/unit'
-require_relative '../lib/parse/CSSParser'
-require_relative '../lib/util/FileReader'
-require_relative '../lib/node/CSSSelector'
+# require_relative '../lib/parse/CSSParser'
+# require_relative '../lib/util/FileReader'
+# require_relative '../lib/node/CSSSelector'
+require_relative '../lib/Toygine.rb'
 
 class CssParserTest <Test::Unit::TestCase
   def test_initial
     cp = CSSParser.new("test/test_pages/css/small.css")
-    cp.parse()
+    cl = cp.parse()
+    for rule in cl
+    	puts rule
+    end
   end
 end

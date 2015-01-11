@@ -24,7 +24,7 @@ class FileReader
 
   def consume_word
     word = ""
-    while has_next() and current_char() =~ /[[:alpha:]]|[[:digit:]]|_/
+    while has_next() and current_char() =~ /[[:alpha:]]|[[:digit:]]|_|-/
       word += consume_and_advance()
     end
     word

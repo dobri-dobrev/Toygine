@@ -44,12 +44,12 @@ class Node
     end
     output_string += indent_string + @node_type +"\n"
     if @node_type.eql? "text"
-      output_string += indent_string + @text + "\n"
+      output_string += indent_string + "innerText: " + @text + "\n"
     end
     #add attributes
     if not @attributes.nil?
       @attributes.each do |key, value|
-        output_string += indent_string + key + " " + value + "\n"
+        output_string += indent_string + "attr: " + key + " val: " + value + "\n"
       end
     end
     if not self.children.nil? and self.children.length > 0
@@ -74,12 +74,12 @@ class Node
     end
     puts indent_string + @node_type
     if @node_type.eql? "text"
-      puts indent_string + @text
+      puts indent_string + " innerText: " + @text
     end
     #print attributes
     if not @attributes.nil?
       @attributes.each do |key, value|
-        puts indent_string + key + " " + value
+        output_string += indent_string + "attr: " + key + " val: " + value + "\n"
       end
     end
     if not self.children.nil? and self.children.length > 0
