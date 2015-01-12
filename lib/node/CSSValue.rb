@@ -1,5 +1,5 @@
 class CSSValue
-  attr_accessor :type, :r, :g, :b, :length, :unit
+  attr_accessor :type, :r, :g, :b, :length, :unit, :keyword
   
   def initialize(t, options)
     @type = t
@@ -8,6 +8,8 @@ class CSSValue
       @r, @g, @b = options[:r], options[:g], options [:b]
     when CSSValueType::LENGTH
       @length, @unit = options[:length], options[:unit]
+    when CSSValueType::KEYWORD
+      @keyword = options[:word]
     end
   end
 

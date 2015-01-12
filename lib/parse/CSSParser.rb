@@ -61,12 +61,14 @@ class CSSParser
       value = parse_color()
     when '0'..'9'
       value = parse_length()
+    when /[[:alpha:]]/
+      value = parse_key_word()
     end
     @fr.consume_next_obl() # skip ;
     return CSSDeclaration.new(name, value)
   end
   
-  def parse_color()
+  def parse_color
     @fr.consume_next_obl() # skip #
     r = @fr.consume_and_advance()
     r += @fr.consume_and_advance()
@@ -77,12 +79,16 @@ class CSSParser
     return CSSValue.new(CSSValueType::COLORVALUE, {:r => r.to_i, :g => g.to_i, :b => b.to_i})
   end
 
-  def parse_length()
+  def parse_length
     num = ""
     while @fr.current_char() =~ /[[:digit:]]/
       num += @fr.consume_and_advance()
     end
     unit = @fr.consume_word()
     return CSSValue.new(CSSValueType::LENGTH, {:length => num.to_i, :unit => unit})
+  end
+
+  def parse_key_word
+    value = CSSValue.new(CSSValueType::KEYWORD, {:word => @fr.consume_word()})
   end
 end
