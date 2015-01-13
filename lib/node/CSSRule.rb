@@ -1,7 +1,9 @@
 class CSSRule
-  attr_accessor :selector, :declarations
+  attr_accessor :selectors, :selector, :declarations
   def initialize
+    #TODO enable multiple selector chains
     @declarations = []
+    @selectors = []
   end
   def set_selector(sel)
     @selector = sel
@@ -13,10 +15,11 @@ class CSSRule
   def to_s
     out = "CSS RULE \n"
     out += "Selectors: "
+    #TODO add multiple selector support
     out += @selector.to_s 
     out += "\n"
     for d in @declarations
-      out += d.name + " " + d.value.type + "\n"
+      out += d.to_s()
     end
     out += "\n"
   end

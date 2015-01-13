@@ -31,6 +31,7 @@ class CSSParser
   end
 
   def parse_selector
+    # TODO handle multiple selectors
     selector = CSSSelector.new()
     while ! @fr.current_char.eql? '{'
       if @fr.current_char().eql? "#"
