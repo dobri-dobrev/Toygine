@@ -3,7 +3,7 @@ class CSSValue
   
   def initialize(t, options)
     @type = t
-    case @type #TODO add options 1 and 2
+    case @type 
     when CSSValueType::COLORVALUE
       @r, @g, @b = options[:r], options[:g], options [:b]
     when CSSValueType::LENGTH

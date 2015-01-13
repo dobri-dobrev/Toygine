@@ -16,7 +16,7 @@ class CSSRule
     out = "CSS RULE \n"
     out += "Selectors: "
     #TODO add multiple selector support
-    out += @selector.to_s 
+    out += @selector.to_s()
     out += "\n"
     for d in @declarations
       out += d.to_s()

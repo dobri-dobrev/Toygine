@@ -13,10 +13,9 @@ require_relative 'node/CSSValue'
 
 
 def runEngine(htmlFileName, cssFileName)
-	
-	htmlparser = HTMLParser.new(htmlFileName)
-	htmlTree = htmlparser.parse()
-	puts htmlTree	
+  htmlparser = HTMLParser.new(htmlFileName)
+  htmlTree = htmlparser.parse()
+  puts htmlTree   
 end
 
 
