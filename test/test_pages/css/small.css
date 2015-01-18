@@ -1,10 +1,13 @@
-#kur{
+#kur.boen{
 	background-color: #343211;
 }
-#dvoenkur .borec {
+#dvoenkur.a, .borec {
 
 	background-color: #343211;
 	color: #343211;
 	margin-left: 32px;
 	float: right;
+}
+a{
+	color: #121212;
 }

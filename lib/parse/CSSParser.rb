@@ -16,10 +16,23 @@ class CSSParser
   def parse_rule
     @fr.skip_white_space()
     rule = CSSRule.new()
-    rule.set_selector( parse_selector() )
-    @fr.skip_white_space()
+    while true
+      rule.add_selector( parse_selector() )  
+      @fr.skip_white_space()
+      case @fr.current_char()
+      when ","
+        @fr.consume_next_obl()
+        @fr.skip_white_space()
+      when "{" 
+          break
+      else
+        raise "Malformed CSS selector in "+ @file_path
+      end
+    end
+    
     @fr.consume_next_obl() # skip {
     @fr.skip_white_space()
+    
     while ! @fr.current_char.eql? '}'
       rule.add_declaration( parse_declaration() )
       @fr.skip_white_space()
@@ -31,25 +44,24 @@ class CSSParser
   end
 
   def parse_selector
-    # TODO handle multiple selectors
     selector = CSSSelector.new()
-    while ! @fr.current_char.eql? '{'
-      if @fr.current_char().eql? "#"
+    while true
+      case @fr.current_char()
+      when "#"
         @fr.consume_next_obl()
         selector.add_tag( CSSSelectorType::ID, @fr.consume_word() )
-      elsif @fr.current_char().eql? "."
+      when "."
         @fr.consume_next_obl()
         selector.add_tag( CSSSelectorType::CLASS, @fr.consume_word() )
-      elsif @fr.current_char().eql? "*"
+      when "*"
         @fr.consume_next_obl()
-      elsif @fr.current_char() =~ /[[alpha]]/
+      when /[[:alpha:]]/
         selector.add_tag( CSSSelectorType::TAG_NAME, @fr.consume_word() )
       else
-        raise "Malformed selector expression in " + @file_path
+        @fr.skip_white_space()
+        return selector
       end
-      @fr.skip_white_space()
     end
-    return selector
   end
 
   def parse_declaration
@@ -70,6 +82,7 @@ class CSSParser
   end
   
   def parse_color
+    #TODO raise error if invalid hex
     @fr.consume_next_obl() # skip #
     r = @fr.consume_and_advance()
     r += @fr.consume_and_advance()
@@ -77,7 +90,7 @@ class CSSParser
     g += @fr.consume_and_advance()
     b = @fr.consume_and_advance()
     b += @fr.consume_and_advance()
-    return CSSValue.new(CSSValueType::COLORVALUE, {:r => r.to_i, :g => g.to_i, :b => b.to_i})
+    return CSSValue.new(CSSValueType::COLORVALUE, {:r => r, :g => g, :b => b})
   end
 
   def parse_length
@@ -86,6 +99,9 @@ class CSSParser
       num += @fr.consume_and_advance()
     end
     unit = @fr.consume_word()
+    unless CSSLengthUnitType::UNIT_TYPES.include? unit
+      raise "Malformed CSS length value in "+ @file_path
+    end
     return CSSValue.new(CSSValueType::LENGTH, {:length => num.to_i, :unit => unit})
   end
 

@@ -20,17 +20,18 @@ class CSSSelector
   def to_s
     out = ""
     for id in @ids
-      out += id + " "
+      out += id + "_"
     end
     for classe in @classes
-      out += classe + " "
+      out += classe + "_"
     end
     for tag_name in @tag_names
-      out += tag_name + " "
+      out += tag_name + "_"
     end
     if out.eql? ""
       out = "empty selector"
     end
+    out += "!"
     return out
   end
 end

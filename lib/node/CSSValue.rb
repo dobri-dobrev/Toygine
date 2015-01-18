@@ -21,7 +21,6 @@ module CSSValueType
   COLORVALUE = "COLORVALUE"
 end
 
-module CSSUnitType
-  PX = "px"
-  PT = "pt"
+module CSSLengthUnitType
+  UNIT_TYPES = ["px", "pt"]
 end

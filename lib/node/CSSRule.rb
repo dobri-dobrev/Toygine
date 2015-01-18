@@ -8,6 +8,9 @@ class CSSRule
   def set_selector(sel)
     @selector = sel
   end
+  def add_selector(sel)
+    @selectors.push(sel)
+  end
   def add_declaration(dec)
     @declarations.push(dec)
   end
@@ -15,8 +18,9 @@ class CSSRule
   def to_s
     out = "CSS RULE \n"
     out += "Selectors: "
-    #TODO add multiple selector support
-    out += @selector.to_s()
+    for s in @selectors
+      out += s.to_s()  
+    end
     out += "\n"
     for d in @declarations
       out += d.to_s()
