@@ -15,6 +15,10 @@ class CSSRule
     @declarations.push(dec)
   end
 
+  def sort_selectors
+     @selectors.sort!{|x,y| y <=> x}
+  end
+
   def to_s
     out = "CSS RULE \n"
     out += "Selectors: "

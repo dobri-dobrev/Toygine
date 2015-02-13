@@ -17,4 +17,7 @@ class Specificity;
 		return @ta <=> other.ta
 	end
 
+	def to_s
+		"("+ @id.to_s + ", " + @cl.to_s + ", " + @ta.to_s + ")" 
+	end
 end
