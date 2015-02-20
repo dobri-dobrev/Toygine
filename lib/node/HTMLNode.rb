@@ -24,8 +24,6 @@ class Node
     when "p"
       @node_type = HTMLNodeType::P
     end
-
-    puts @node_type
     if name.eql? "text"
       # case text node
       @text = txt
