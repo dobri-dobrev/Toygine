@@ -2,7 +2,30 @@ class Node
   attr_accessor :children, :node_type, :attributes, :text
 
   def initialize(name, attrs = nil, childr = nil, txt = nil)
-    @node_type = name
+    case name
+    when "text"
+      @node_type = HTMLNodeType::TEXT
+    when "html"
+      @node_type = HTMLNodeType::HTML
+    when "body"
+      @node_type = HTMLNodeType::BODY
+    when "head"
+      @node_type = HTMLNodeType::HEAD
+    when "link"
+      @node_type = HTMLNodeType::LINK
+    when "script"
+      @node_type = HTMLNodeType::SCRIPT
+    when "img"
+      @node_type = HTMLNodeType::IMG
+    when "a"
+      @node_type = HTMLNodeType::A
+    when "div"
+      @node_type = HTMLNodeType::DIV
+    when "p"
+      @node_type = HTMLNodeType::P
+    end
+
+    puts @node_type
     if name.eql? "text"
       # case text node
       @text = txt
@@ -64,7 +87,6 @@ class Node
     print_recursive(0)
   end
 
-
   def print_recursive(indent)
     indent_string = ""
     i = 0
@@ -88,4 +110,17 @@ class Node
       end
     end
   end
+end
+
+module HTMLNodeType
+  HTML = "html"
+  BODY = "body"
+  HEAD = "head"
+  LINK = "link"
+  SCRIPT = "script"
+  IMG = "img"
+  A = "a"
+  DIV = "div"
+  TEXT = "text"
+  P = "p"
 end
