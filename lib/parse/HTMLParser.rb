@@ -15,6 +15,12 @@ class HTMLParser
     end
   end
 
+  def get_css(node)
+    css_array = []
+    get_css_rec(node, css_array)
+    return css_array
+  end
+
   private 
     
     def parse_node_rec()
@@ -118,14 +124,23 @@ class HTMLParser
         @fr.consume_next_obl()  
       end
     end
-
     
-
     def is_at_beginning_of_element()
       return ( @fr.has_next() and @fr.current_char().eql? "<" and ! @fr.next_char().eql? "/" )
     end
 
     def is_at_closing_of_element()
       return (@fr.current_char().eql? "<" and @fr.next_char().eql? "/" )
+    end
+
+    def get_css_rec(node, arr)
+      if node.node_type == HTMLNodeType::LINK
+        arr.push(node.attributes["href"])
+      end
+      unless node.children.nil?
+        for child in node.children
+          get_css_rec(child, arr)
+        end
+      end
     end
 end
