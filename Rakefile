@@ -16,6 +16,13 @@ Rake::TestTask.new do |t|
   t.verbose = false
 end
 
+Rake::TestTask.new do |t|
+  #t.libs << "lib"
+  t.name = "test:unit:css"
+  t.test_files = FileList['test/UnitTestsCSS*.rb']
+  t.verbose = false
+end
+
 task :test do
 	ruby "lib/Toygine.rb test/test_pages/link_test.html"
 	ruby "lib/Toygine.rb test/test_pages/attribute_test.html"
