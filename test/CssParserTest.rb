@@ -1,7 +1,4 @@
 require 'test/unit'
-# require_relative '../lib/parse/CSSParser'
-# require_relative '../lib/util/FileReader'
-# require_relative '../lib/node/CSSSelector'
 require_relative '../lib/Toygine.rb'
 
 class CssParserTest <Test::Unit::TestCase

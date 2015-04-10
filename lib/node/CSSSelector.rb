@@ -1,10 +1,15 @@
 class CSSSelector
+  include Comparable
   attr_accessor :ids, :classes, :tag_names, :specificity
   def initialize
     @ids = []
     @classes = []
     @tag_names = []
     @specificity = Specificity.new(0, 0, 0)
+  end
+
+  def <=>(other)
+    return @specificity <=> other.specificity
   end
 
   def add_tag(type, tag)
@@ -19,10 +24,6 @@ class CSSSelector
       @specificity.ta += 1
       @tag_names.push(tag)
     end 
-  end
-
-  def <=>(other)
-    return @specificity <=> other.specificity
   end
 
   def to_s
