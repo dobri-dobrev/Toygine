@@ -1,12 +1,9 @@
 class CSSRule
-  attr_accessor :selectors, :selector, :declarations
+  attr_accessor :selectors, :declarations
   def initialize
     #TODO enable multiple selector chains
     @declarations = []
     @selectors = []
-  end
-  def set_selector(sel)
-    @selector = sel
   end
   def add_selector(sel)
     @selectors.push(sel)
