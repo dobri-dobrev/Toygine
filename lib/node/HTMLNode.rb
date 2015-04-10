@@ -23,6 +23,8 @@ class Node
       @node_type = HTMLNodeType::DIV
     when "p"
       @node_type = HTMLNodeType::P
+    else
+      raise "Unsupported node type"
     end
     if name.eql? "text"
       # case text node

@@ -1,7 +1,6 @@
 class CSSParser
-  def initialize(file_p)
-    @file_path = file_p
-    @fr = FileReader.new(@file_path)
+  def initialize(file_reader)
+    @fr = file_reader
   end
   def parse
     @fr.skip_white_space()
@@ -26,7 +25,7 @@ class CSSParser
       when "{" 
           break
       else
-        raise "Malformed CSS selector in "+ @file_path
+        raise "Malformed CSS selector in "+ @fr.path
       end
     end
     rule.sort_selectors()
@@ -100,7 +99,7 @@ class CSSParser
     end
     unit = @fr.consume_word()
     unless CSSLengthUnitType::UNIT_TYPES.include? unit
-      raise "Malformed CSS length value in "+ @file_path
+      raise "Malformed CSS length value in "+ @fr.path
     end
     return CSSValue.new(CSSValueType::LENGTH, {:length => num.to_i, :unit => unit})
   end

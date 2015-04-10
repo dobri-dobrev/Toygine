@@ -1,4 +1,5 @@
 class FileReader
+  attr_accessor :path
   @eof = false
   def initialize(file_path)
     @path = file_path

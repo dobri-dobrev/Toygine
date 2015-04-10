@@ -1,8 +1,7 @@
 class HTMLParser
-  attr_accessor :name, :fileString, :position
-  def initialize(file_path)
-    @name = file_path
-    @fr = FileReader.new(@name)
+  attr_accessor :fileString, :position
+  def initialize(file_reader)
+    @fr = file_reader
   end
 
   def parse()
@@ -11,7 +10,7 @@ class HTMLParser
       htmlNode = parse_node_rec()
       return htmlNode
     else
-      raise "Malformed HTML in " + @name
+      raise "Malformed HTML in " + @fr.path
     end
   end
 
@@ -113,7 +112,7 @@ class HTMLParser
         @fr.consume_next_obl() #skip over '
         return value
       end
-      raise "Malformed identifier expression in " + @name
+      raise "Malformed identifier expression in " + @fr.path
     end
 
     def consume_closing_tag()
@@ -135,7 +134,7 @@ class HTMLParser
 
     def get_css_rec(node, arr)
       if node.node_type == HTMLNodeType::LINK
-        arr.push(node.attributes["href"])
+        arr.push(FileReader.new(node.attributes["href"]))
       end
       unless node.children.nil?
         for child in node.children
