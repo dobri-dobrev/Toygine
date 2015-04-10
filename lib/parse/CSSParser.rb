@@ -28,7 +28,7 @@ class CSSParser
         raise "Malformed CSS selector in "+ @fr.path
       end
     end
-    rule.sort_selectors()
+    rule.sort_selectors!()
     @fr.consume_next_obl() # skip {
     @fr.skip_white_space()
     

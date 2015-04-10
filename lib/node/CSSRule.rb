@@ -12,7 +12,7 @@ class CSSRule
     @declarations.push(dec)
   end
 
-  def sort_selectors
+  def sort_selectors!
      @selectors.sort!{|x,y| y <=> x}
   end
 
