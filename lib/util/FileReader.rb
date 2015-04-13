@@ -1,9 +1,9 @@
 class FileReader
   attr_accessor :path
   @eof = false
-  def initialize(file_path)
+  def initialize(file_in, file_path)
     @path = file_path
-    @file = File.new(@path, "r")
+    @file = file_in
     if !@file.eof?
       @line = @file.readline()
       @len = @line.length
@@ -25,10 +25,14 @@ class FileReader
 
   def consume_word
     word = ""
-    while has_next() and current_char() =~ /[[:alpha:]]|[[:digit:]]|_|-/
-      word += consume_and_advance()
+    word += current_char()
+    while has_next() and next_char() =~ /[[:alpha:]]|[[:digit:]]|_|-/
+      word += consume_next_obl()
     end
-    word
+    if has_next()
+      consume_next_obl()  
+    end
+    return word
   end
 
   def consume_and_advance

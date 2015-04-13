@@ -14,7 +14,7 @@ require_relative 'node/CSSValue'
 
 
 def runEngine(htmlFileName, cssFileName)
-  html_file_reader = FileReader.new(htmlFileName)
+  html_file_reader = FileReader.new(File.new(htmlFileName, "r"), htmlFileName)
   htmlparser = HTMLParser.new(html_file_reader)
   htmlTree = htmlparser.parse()
   for css in htmlparser.get_css(htmlTree)

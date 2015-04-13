@@ -3,7 +3,7 @@ require_relative '../lib/Toygine.rb'
 
 class CssParserTest <Test::Unit::TestCase
   def test_initial
-    cp = CSSParser.new(FileReader.new("test/test_pages/css/small.css"))
+    cp = CSSParser.new(FileReader.new(File.new("test/test_pages/css/small.css", "r"), "test/test_pages/css/small.css" ))
     cl = cp.parse()
     for rule in cl
     	puts rule
