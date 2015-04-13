@@ -24,7 +24,9 @@ Rake::TestTask.new do |t|
 end
 
 task 'test:unit' do
+	puts "UTIL UNIT TESTS"
 	Rake::Task["test:unit:util"].execute
+	puts "CSS UNIT TESTS"
 	Rake::Task["test:unit:css"].execute
 end
 
