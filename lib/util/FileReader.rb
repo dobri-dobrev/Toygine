@@ -35,11 +35,6 @@ class FileReader
     return word
   end
 
-  def consume_and_advance
-    char = current_char()
-    consume_next_obl()
-    return char
-  end
 
   def consume_next_obl
     if @cursor + 1 < @len

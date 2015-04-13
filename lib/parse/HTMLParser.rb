@@ -98,7 +98,8 @@ class HTMLParser
         @fr.consume_next_obl()
         value = ""
         while not @fr.current_char().eql? '"'
-          value += @fr.consume_and_advance()
+          value += @fr.current_char()
+          @fr.consume_next_obl()
         end
         @fr.consume_next_obl() #skip over "
         return value
@@ -107,7 +108,8 @@ class HTMLParser
         @fr.consume_next_obl()
         value = ""
         while not @fr.current_char().eql? "'"
-          value += @fr.consume_and_advance()
+          value += @fr.current_char()
+          @fr.consume_next_obl()
         end
         @fr.consume_next_obl() #skip over '
         return value
