@@ -3,24 +3,27 @@ require 'rake/testtask'
 task default: %w[test]
 
 Rake::TestTask.new do |t|
-  t.libs << "lib"
   t.name = "testcss"
   t.test_files = FileList['test/CssParserTest.rb']
   t.verbose = true
 end
 
+
 Rake::TestTask.new do |t|
-  t.libs << "lib"
-  t.name = "test:unit"
-  t.test_files = FileList['test/SpecificityTest.rb']
+  t.name = "test:unit:css"
+  t.test_files = FileList['test/unit/CSS/UnitTestsCSS*.rb']
   t.verbose = false
 end
 
 Rake::TestTask.new do |t|
-  #t.libs << "lib"
-  t.name = "test:unit:css"
-  t.test_files = FileList['test/UnitTestsCSS*.rb']
+  t.name = "test:unit:util"
+  t.test_files = FileList['test/unit/util/UnitTests*.rb']
   t.verbose = false
+end
+
+task 'test:unit' do
+	Rake::Task["test:unit:util"].execute
+	Rake::Task["test:unit:css"].execute
 end
 
 task :test do

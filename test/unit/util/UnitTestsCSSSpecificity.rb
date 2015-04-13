@@ -1,6 +1,6 @@
 require 'test/unit'
 
-require_relative '../lib/Toygine.rb'
+require_relative '../../../lib/Toygine.rb'
 
 class SpecificityTest <Test::Unit::TestCase
   def test_initial

@@ -1,5 +1,5 @@
 require 'test/unit'
-require_relative '../lib/Toygine.rb'
+require_relative '../../../lib/Toygine.rb'
 
 class UnitTestsCSSSelector <Test::Unit::TestCase
   def test_initialization
