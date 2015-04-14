@@ -82,20 +82,23 @@ class CSSParser
   
   def parse_color
     #TODO raise error if invalid hex
-    @fr.consume_next_obl() # skip #
-    r = @fr.consume_and_advance()
-    r += @fr.consume_and_advance()
-    g = @fr.consume_and_advance()
-    g += @fr.consume_and_advance()
-    b = @fr.consume_and_advance()
-    b += @fr.consume_and_advance()
+    r = @fr.consume_next_obl()
+    r += @fr.consume_next_obl()
+    g = @fr.consume_next_obl()
+    g += @fr.consume_next_obl()
+    b = @fr.consume_next_obl()
+    b += @fr.consume_next_obl()
+    if @fr.has_next()
+      @fr.consume_next_obl()
+    end
     return CSSValue.new(CSSValueType::COLORVALUE, {:r => r, :g => g, :b => b})
   end
 
   def parse_length
     num = ""
     while @fr.current_char() =~ /[[:digit:]]/
-      num += @fr.consume_and_advance()
+      num += @fr.current_char()
+      @fr.consume_next_obl()
     end
     unit = @fr.consume_word()
     unless CSSLengthUnitType::UNIT_TYPES.include? unit
