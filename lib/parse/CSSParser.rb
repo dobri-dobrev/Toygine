@@ -34,7 +34,7 @@ class CSSParser
     
     while ! @fr.current_char.eql? '}'
       rule.add_declaration( parse_declaration() )
-      @fr.consume_next_obl()
+      @fr.consume_next_obl() # move over ;
       @fr.skip_white_space()
     end
     if @fr.has_next()
@@ -77,7 +77,6 @@ class CSSParser
     when /[[:alpha:]]/
       value = parse_key_word()
     end
-    @fr.consume_next_obl() # skip ;
     return CSSDeclaration.new(name, value)
   end
   
@@ -89,6 +88,9 @@ class CSSParser
     g += @fr.consume_next_obl()
     b = @fr.consume_next_obl()
     b += @fr.consume_next_obl()
+    if @fr.has_next()
+      @fr.consume_next_obl() #move to ;  
+    end
     return CSSValue.new(CSSValueType::COLORVALUE, {:r => r, :g => g, :b => b})
   end
 
@@ -106,6 +108,6 @@ class CSSParser
   end
 
   def parse_key_word
-    value = CSSValue.new(CSSValueType::KEYWORD, {:word => @fr.consume_word()})
+    return CSSValue.new(CSSValueType::KEYWORD, {:word => @fr.consume_word()})
   end
 end

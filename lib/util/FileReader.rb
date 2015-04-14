@@ -53,6 +53,24 @@ class FileReader
     end
   end
 
+  def skip_character
+    if @cursor + 1 < @len
+      @cursor += 1
+      char = @line[@cursor]
+      return char
+    else
+      @cursor += 1
+      if @file.eof?
+        raise "Malformed input in " + @path
+      end
+      @line = @file.readline()
+      @len = @line.length
+      @cursor = 0
+      char = @line[@cursor]
+      return char  
+    end
+  end
+
   def current_char
     return @line[@cursor]
   end

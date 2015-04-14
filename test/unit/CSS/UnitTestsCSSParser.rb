@@ -39,7 +39,7 @@ class UnitTestsCSSParser <Test::Unit::TestCase
   	assert_equal(cv.type, CSSValueType::KEYWORD)
   end
 
-  def test_declaration
+  def test_parse_declaration
     mock_file = MockFile.new(["background-color: #332211;"])
   	fr = FileReader.new(mock_file, "test_path")
   	cp = CSSParser.new(fr)
@@ -47,4 +47,15 @@ class UnitTestsCSSParser <Test::Unit::TestCase
   	assert_equal(declaration.name, "background-color")
   	assert_equal(declaration.value.type, CSSValueType::COLORVALUE)
   end
+
+  def test_parse_declaration_2
+    mock_file = MockFile.new(["margin-left: 20pt;"])
+  	fr = FileReader.new(mock_file, "test_path")
+  	cp = CSSParser.new(fr)
+  	declaration = cp.parse_declaration()
+  	assert_equal(declaration.name, "margin-left")
+  	assert_equal(declaration.value.type, CSSValueType::LENGTH)
+  end
+
+
 end
