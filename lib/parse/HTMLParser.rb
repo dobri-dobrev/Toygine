@@ -93,7 +93,6 @@ class HTMLParser
     end
 
     def consume_attribute_value()
-
       if @fr.current_char().eql? '"'
         @fr.consume_next_obl()
         value = ""

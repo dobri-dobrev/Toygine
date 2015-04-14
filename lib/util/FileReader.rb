@@ -35,7 +35,6 @@ class FileReader
     return word
   end
 
-
   def consume_next_obl
     if @cursor + 1 < @len
       @cursor += 1

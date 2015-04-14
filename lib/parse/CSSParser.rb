@@ -34,6 +34,7 @@ class CSSParser
     
     while ! @fr.current_char.eql? '}'
       rule.add_declaration( parse_declaration() )
+      @fr.consume_next_obl()
       @fr.skip_white_space()
     end
     if @fr.has_next()
@@ -88,9 +89,6 @@ class CSSParser
     g += @fr.consume_next_obl()
     b = @fr.consume_next_obl()
     b += @fr.consume_next_obl()
-    if @fr.has_next()
-      @fr.consume_next_obl()
-    end
     return CSSValue.new(CSSValueType::COLORVALUE, {:r => r, :g => g, :b => b})
   end
 
