@@ -1,28 +1,28 @@
 class Node
-  attr_accessor :children, :node_type, :attributes, :text
+  attr_accessor :children, :type, :attributes, :text
 
   def initialize(name, attrs = nil, childr = nil, txt = nil)
     case name
     when "text"
-      @node_type = HTMLNodeType::TEXT
+      @type = HTMLNodeType::TEXT
     when "html"
-      @node_type = HTMLNodeType::HTML
+      @type = HTMLNodeType::HTML
     when "body"
-      @node_type = HTMLNodeType::BODY
+      @type = HTMLNodeType::BODY
     when "head"
-      @node_type = HTMLNodeType::HEAD
+      @type = HTMLNodeType::HEAD
     when "link"
-      @node_type = HTMLNodeType::LINK
+      @type = HTMLNodeType::LINK
     when "script"
-      @node_type = HTMLNodeType::SCRIPT
+      @type = HTMLNodeType::SCRIPT
     when "img"
-      @node_type = HTMLNodeType::IMG
+      @type = HTMLNodeType::IMG
     when "a"
-      @node_type = HTMLNodeType::A
+      @type = HTMLNodeType::A
     when "div"
-      @node_type = HTMLNodeType::DIV
+      @type = HTMLNodeType::DIV
     when "p"
-      @node_type = HTMLNodeType::P
+      @type = HTMLNodeType::P
     else
       raise "Unsupported node type"
     end
@@ -65,8 +65,8 @@ class Node
       indent_string += "\t"
       i += 1
     end
-    output_string += indent_string + @node_type +"\n"
-    if @node_type.eql? "text"
+    output_string += indent_string + @type +"\n"
+    if @type.eql? "text"
       output_string += indent_string + "innerText: " + @text + "\n"
     end
     #add attributes
@@ -94,8 +94,8 @@ class Node
       indent_string += "\t"
       i += 1
     end
-    puts indent_string + @node_type
-    if @node_type.eql? "text"
+    puts indent_string + @type
+    if @type.eql? "text"
       puts indent_string + " innerText: " + @text
     end
     #print attributes

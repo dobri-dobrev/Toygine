@@ -8,6 +8,12 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+Rake::TestTask.new do |t|
+
+  t.name = "test:unit:html"
+  t.test_files = FileList['test/unit/HTML/UnitTests*.rb']
+  t.verbose = false
+end
 
 Rake::TestTask.new do |t|
 
@@ -28,6 +34,8 @@ task 'test:unit' do
 	Rake::Task["test:unit:util"].execute
 	puts "CSS UNIT TESTS"
 	Rake::Task["test:unit:css"].execute
+  puts "HTML UNIT TESTS"
+  Rake::Task["test:unit:html"].execute
 end
 
 task :test do
