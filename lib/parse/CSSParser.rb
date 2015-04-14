@@ -56,7 +56,12 @@ class CSSParser
       when "*"
         @fr.consume_next_obl()
       when /[[:alpha:]]/
-        selector.add_tag( CSSSelectorType::TAG_NAME, @fr.consume_word() )
+        if @fr.has_next()
+          selector.add_tag( CSSSelectorType::TAG_NAME, @fr.consume_word() )
+        else
+          @fr.skip_white_space()
+          return selector  
+        end
       else
         @fr.skip_white_space()
         return selector

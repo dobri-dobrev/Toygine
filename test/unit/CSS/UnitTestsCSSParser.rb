@@ -66,4 +66,12 @@ class UnitTestsCSSParser <Test::Unit::TestCase
   	assert_equal(declaration.value.type, CSSValueType::KEYWORD)
   end
 
+  def test_parse_selector
+  	mock_file = MockFile.new(["#id2.a"])
+  	fr = FileReader.new(mock_file, "test_path")
+  	cp = CSSParser.new(fr)
+  	selector = cp.parse_selector()
+  	assert_equal(selector.ids[0], "id2")
+  	assert_equal(selector.classes[0], "a")
+  end
 end
