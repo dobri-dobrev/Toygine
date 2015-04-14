@@ -74,4 +74,56 @@ class UnitTestsCSSParser <Test::Unit::TestCase
   	assert_equal(selector.ids[0], "id2")
   	assert_equal(selector.classes[0], "a")
   end
+
+  def test_parse_rule
+  	mock_arr = ["a{"]
+  	mock_arr << "margin-left: 10px;"
+  	mock_arr << "}"
+  	mock_file = MockFile.new(mock_arr)
+  	fr = FileReader.new(mock_file, "test_path")
+  	cp = CSSParser.new(fr)
+  	rule = cp.parse_rule()
+  	assert_equal(rule.declarations.length, 1)
+  	assert_equal(rule.selectors.length, 1)
+  	assert_equal(fr.current_char(), "}")
+  end
+
+  def test_parse_rule_twice_in_a_row
+  	mock_arr = ["a{"]
+  	mock_arr << "margin-right: 10px;"
+  	mock_arr << "}"
+  	mock_arr << "div{"
+  	mock_arr << "margin-left: 10px;"
+  	mock_arr << "}"
+  	mock_file = MockFile.new(mock_arr)
+  	fr = FileReader.new(mock_file, "test_path")
+  	cp = CSSParser.new(fr)
+  	rule = cp.parse_rule()
+  	assert_equal(rule.declarations[0].name, "margin-right")
+  	rule = cp.parse_rule()
+  	assert_equal(rule.selectors[0].tag_names[0], "div")
+  	assert_equal(rule.selectors[0].tag_names.length, 1)
+  	assert_equal(rule.selectors[0].classes.length, 0)
+  	assert_equal(rule.selectors[0].ids.length, 0)
+  end
+
+  def test_parse
+  	mock_arr = ["a{"]
+  	mock_arr << "margin-right: 10px;"
+  	mock_arr << "}"
+  	mock_arr << "div{"
+  	mock_arr << "margin-left: 10px;"
+  	mock_arr << "}"
+  	mock_file = MockFile.new(mock_arr)
+  	fr = FileReader.new(mock_file, "test_path")
+  	cp = CSSParser.new(fr)
+  	rules = cp.parse()
+  	assert_equal(rules[0].declarations[0].name, "margin-right")
+  	assert_equal(rules[1].selectors[0].tag_names[0], "div")
+  	assert_equal(rules[1].selectors[0].tag_names.length, 1)
+  	assert_equal(rules[1].selectors[0].classes.length, 0)
+  	assert_equal(rules[1].selectors[0].ids.length, 0)
+  	assert_equal(rules[1].declarations[0].value.type, CSSValueType::LENGTH)
+  	assert_equal(rules[1].declarations[0].value.unit, "px")
+  end
 end

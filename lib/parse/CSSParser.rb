@@ -4,12 +4,12 @@ class CSSParser
   end
   def parse
     @fr.skip_white_space()
-    @cr = []
+    @rules = []
     while @fr.has_next()
-      @cr.push( parse_rule() )
+      @rules.push( parse_rule() )
       @fr.skip_white_space()
     end
-    return @cr
+    return @rules
   end
 
   def parse_rule
