@@ -57,5 +57,13 @@ class UnitTestsCSSParser <Test::Unit::TestCase
   	assert_equal(declaration.value.type, CSSValueType::LENGTH)
   end
 
+  def test_parse_declaration_3
+    mock_file = MockFile.new(["float: left;"])
+  	fr = FileReader.new(mock_file, "test_path")
+  	cp = CSSParser.new(fr)
+  	declaration = cp.parse_declaration()
+  	assert_equal(declaration.name, "float")
+  	assert_equal(declaration.value.type, CSSValueType::KEYWORD)
+  end
 
 end
