@@ -6,10 +6,10 @@ class UnitTestsHTMLNode <Test::Unit::TestCase
   	node = Node.new(HTMLNodeType::TEXT, {}, [], "blah")
   	assert_equal(HTMLNodeType::TEXT, node.type)
     assert_equal("blah", node.text)
-    node = Node.new(HTMLNodeType::A, "blah")
+    node = Node.new(HTMLNodeType::A, {}, [], "blah") 
+    assert_equal(HTMLNodeType::A, node.type)
+    assert_equal("blah", node.text)
   end
   
-
-
 end
 
