@@ -20,7 +20,7 @@ def runEngine(htmlFileName, cssFileName)
   for css in htmlparser.get_css(htmlTree)
     puts css
   end
-  puts htmlTree   
+  htmlTree.print()
 end
 
 

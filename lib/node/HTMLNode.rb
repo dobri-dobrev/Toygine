@@ -26,22 +26,18 @@ class Node
     else
       raise "Unsupported node type"
     end
+    @attributes = {}
+    @children = []
     if name.eql? "text"
       # case text node
-      @text = txt
-      @attributes = nil
-      @children = nil
+      @text = txt  
     else
       # case element node
       @text = txt
-      if childr.nil?
-        @children = []
-      else
+      if !childr.nil?
         @children = childr
       end
-      if attrs.nil?
-        @attributes = {}
-      else
+      if !attrs.nil?
         @attributes = attrs
       end
     end
@@ -51,39 +47,28 @@ class Node
     #TODO type checking
     @children << child
   end
-  
-  def to_s()
-    output_string = recursive_to_s(0)
-    output_string
-  end
 
-  def recursive_to_s(indent)
-    output_string = ""
-    indent_string = ""
-    i = 0
-    while i < indent
-      indent_string += "\t"
-      i += 1
-    end
-    output_string += indent_string + @type +"\n"
+  def to_s
+    output_string = @type +"\n"
     if @type.eql? "text"
-      output_string += indent_string + "innerText: " + @text + "\n"
+      output_string += "innerText: " + @text + "\n"
     end
     #add attributes
     if not @attributes.nil?
       @attributes.each do |key, value|
-        output_string += indent_string + "attr: " + key + " val: " + value + "\n"
+        output_string += "attr: " + key + " val: " + value + "\n"
       end
     end
-    if not self.children.nil? and self.children.length > 0
+    #add children
+    if self.children.length > 0
       for child in self.children
         output_string += child.recursive_to_s(indent+1)
       end
     end
-    output_string
+    return output_string
   end
 
-  def print()
+  def print
     print_recursive(0)
   end
 
@@ -96,18 +81,14 @@ class Node
     end
     puts indent_string + @type
     if @type.eql? "text"
-      puts indent_string + " innerText: " + @text
+      puts indent_string + "innerText: " + @text
     end
     #print attributes
-    if not @attributes.nil?
-      @attributes.each do |key, value|
-        output_string += indent_string + "attr: " + key + " val: " + value + "\n"
-      end
+    @attributes.each do |key, value|
+      puts indent_string + "attr: " + key + " val: " + value + "\n"
     end
-    if not self.children.nil? and self.children.length > 0
-      for child in self.children
-        child.print_recursive(indent+1)
-      end
+    for child in self.children
+      child.print_recursive(indent+1)
     end
   end
 end

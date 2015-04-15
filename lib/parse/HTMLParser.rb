@@ -79,7 +79,7 @@ class HTMLParser
         attributes[tuple[0]] = tuple[1]
         @fr.skip_white_space()
       end
-      attributes
+      return attributes
     end
 
     def consume_attribute_pair()
@@ -134,7 +134,7 @@ class HTMLParser
     end
 
     def get_css_rec(node, arr)
-      if node.node_type == HTMLNodeType::LINK
+      if node.type == HTMLNodeType::LINK
         arr.push(FileReader.new(File.new(node.attributes["href"]), node.attributes["href"]))
       end
       unless node.children.nil?
