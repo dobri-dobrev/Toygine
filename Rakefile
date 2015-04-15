@@ -18,7 +18,7 @@ end
 Rake::TestTask.new do |t|
 
   t.name = "test:unit:css"
-  t.test_files = FileList['test/unit/CSS/UnitTestsCSS*.rb']
+  t.test_files = FileList['test/unit/CSS/UnitTests*.rb']
   t.verbose = false
 end
 
