@@ -73,7 +73,8 @@ class HTMLParser
   def consume_attributes()
     attributes = {}
     @fr.skip_white_space()
-    while not (@fr.current_char().eql? ">" or (@fr.current_char().eql? "/" and @fr.next_char().eql? ">") )
+    while not (@fr.current_char().eql? ">" or 
+      (@fr.current_char().eql? "/" and @fr.next_char().eql? ">") )
       tuple = consume_attribute_pair()
       attributes[tuple[0]] = tuple[1]
       @fr.skip_white_space()

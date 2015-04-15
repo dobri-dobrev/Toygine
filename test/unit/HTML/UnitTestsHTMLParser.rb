@@ -64,5 +64,13 @@ class UnitTestsHTMLParser <Test::Unit::TestCase
 	  assert_equal('big', attrs["small"])
 	  assert_equal('first', attrs["second"])
 	end
+	def test_consume_text
+		mock_file = MockFile.new(["something! big, >"])
+	  fr = FileReader.new(mock_file, "test_path")
+	  cp = HTMLParser.new(fr)
+	  text = cp.consume_text()
+	  assert_equal("something! big, ", text)
+	  assert_equal('>', fr.current_char())
+	end
 end
 
