@@ -64,7 +64,8 @@ class UnitTestsHTMLParser <Test::Unit::TestCase
 	  assert_equal('big', attrs["small"])
 	  assert_equal('first', attrs["second"])
 	end
-	def test_consume_text
+	
+  def test_consume_text
 		mock_file = MockFile.new(["something! big, >"])
 	  fr = FileReader.new(mock_file, "test_path")
 	  cp = HTMLParser.new(fr)
@@ -72,5 +73,35 @@ class UnitTestsHTMLParser <Test::Unit::TestCase
 	  assert_equal("something! big, ", text)
 	  assert_equal('>', fr.current_char())
 	end
+
+  def test_parse
+    arr = ["<html> <head> </head>"]
+    arr << '<body float="left"> <a href = "www.yahoo.com"> Yahoo! </a> </body> </html>'
+    mock_file = MockFile.new(arr)
+    fr = FileReader.new(mock_file, "test_path")
+    cp = HTMLParser.new(fr)
+    head = cp.parse()
+    assert_equal(HTMLNodeType::HTML, head.type)
+    assert_equal(2, head.children.length)
+    assert_equal(HTMLNodeType::HEAD, head.children[0].type)
+    assert_equal(HTMLNodeType::BODY, head.children[1].type)
+    assert_equal("left", head.children[1].attributes["float"])
+    assert_equal(HTMLNodeType::A, head.children[1].children[0].type)
+    assert_equal("www.yahoo.com", head.children[1].children[0].attributes["href"])
+    assert_equal("Yahoo! ", head.children[1].children[0].children[0].text)
+  end
+
+  def test_get_css
+    arr = ["<html> <head> "]
+    arr << '<link rel="stylesheet" type="text/css" href="css/small.css" />'
+    arr << "</head>"
+    arr << "</html> "
+    mock_file = MockFile.new(arr)
+    fr = FileReader.new(mock_file, "test_path")
+    cp = HTMLParser.new(fr)
+    head = cp.parse()
+    css_arr = cp.get_css(head)
+    assert_equal(1, css_arr.length)
+  end
 end
 

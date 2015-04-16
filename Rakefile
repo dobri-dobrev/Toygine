@@ -38,8 +38,19 @@ task 'test:unit' do
   Rake::Task["test:unit:html"].execute
 end
 
+task 'test:all' do
+	Rake::Task["test:unit"].execute
+	Rake::Task["testcss"].execute
+	Rake::Task["test:link"].execute
+	Rake::Task["test"].execute
+end
+
 task :test do
 	ruby "lib/Toygine.rb test/test_pages/attribute_test.html"
 	ruby "lib/Toygine.rb test/test_pages/small.html"
-	ruby "lib/Toygine.rb test/test_pages/img_tag.html"	
+	ruby "lib/Toygine.rb test/test_pages/img_tag.html"
+end
+
+task 'test:link' do
+	ruby "lib/Toygine.rb test/test_pages/link_test.html"		
 end
