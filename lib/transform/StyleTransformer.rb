@@ -39,6 +39,12 @@ class StyleTransformer
     return matched_rules
   end
 
+  def self.get_sorted_matched_rules(html_node, rules)
+    matched_rules = self.matched_rules(html_node, rules)
+    matched_rules.sort_by!{|mr| mr.specificity}
+    return matched_rules
+  end
+
   def self.specified_values(html_node, rules)
     values = {}
     self.get_sorted_matched_rules(html_node, rules).each { |mr|
@@ -49,9 +55,12 @@ class StyleTransformer
     return values
   end
 
-  def self.get_sorted_matched_rules(html_node, rules)
-    matched_rules = self.matched_rules(html_node, rules)
-    matched_rules.sort_by!{|mr| mr.specificity}
-    return matched_rules
+  def self.style_tree(html_node, rules)
+    vals = self.specified_values(html_node, rules)
+    st = StyleNode.new(html_node, vals)
+    html_node.children.each { |child|
+      st.add_child(self.style_tree(child, rules))
+      }
+    return st
   end
 end

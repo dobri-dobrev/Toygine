@@ -166,6 +166,81 @@ class UnitTestsStyleTransformer <Test::Unit::TestCase
 
   end
 
+  def test_style_tree
+    html_node = Node.new(HTMLNodeType::DIV, {"class" => "test cl"}, [], nil)
+    html_node.add_child(Node.new(HTMLNodeType::A, {"class" => "test"}, [], nil) )
+    html_node.add_child(Node.new(HTMLNodeType::A, {"class" => "cl"}, [], nil) )
+
+    rule1 = CSSRule.new()
+    rule2= CSSRule.new()
+    rule3 = CSSRule.new()
+    rule4 = CSSRule.new()
+
+    rules = []
+
+    sel11 = CSSSelector.new()
+    sel11.add_tag(CSSSelectorType::TAG_NAME, HTMLNodeType::DIV)
+    sel11.add_tag(CSSSelectorType::CLASS, "test")
+    sel11.add_tag(CSSSelectorType::CLASS, "cl")
+    rule1.add_selector(sel11)
+    rule1.add_declaration(CSSDeclaration.new("color", CSSValue.new(CSSValueType::COLORVALUE, {:r => 10, :g => 11, :b => 12})))
+    rule1.sort_selectors!()
+    rules << rule1
+
+    sel21 = CSSSelector.new()
+    sel21.add_tag(CSSSelectorType::CLASS, "test")
+    rule2.add_selector(sel21)
+    rule2.add_declaration(CSSDeclaration.new("width", CSSValue.new(CSSValueType::LENGTH, {:length => 100, :unit => "pt"})))
+    rule2.sort_selectors!()
+    rules << rule2
+
+    sel31 = CSSSelector.new()
+    sel31.add_tag(CSSSelectorType::TAG_NAME, HTMLNodeType::A)
+    rule3.add_selector(sel31)
+    rule3.add_declaration(CSSDeclaration.new("float", CSSValue.new(CSSValueType::KEYWORD, {:word => "right"})))
+    rule3.sort_selectors!()
+    rules << rule3
+
+    sel41 = CSSSelector.new()
+    sel41.add_tag(CSSSelectorType::TAG_NAME, HTMLNodeType::A)
+    sel41.add_tag(CSSSelectorType::CLASS, "cl")
+    rule4.add_selector(sel41)
+    rule4.add_declaration(CSSDeclaration.new("height", CSSValue.new(CSSValueType::LENGTH, {:length => 10, :unit => "pt"})))
+    rule4.sort_selectors!()
+    rules << rule4
+
+    st = StyleTransformer.style_tree(html_node, rules)
+
+    assert_equal(10, st.value("color").r)
+    assert_equal(100, st.value("width").length)
+    assert_equal(nil, st.value("float"))
+    assert_equal(nil, st.value("height"))
+
+    assert_equal(nil, st.children[0].value("color"))
+    assert_equal(100, st.children[0].value("width").length)
+    assert_equal("right", st.children[0].value("float").keyword)
+    assert_equal(nil, st.children[0].value("height"))
+
+    assert_equal(nil, st.children[1].value("color"))
+    assert_equal(nil, st.children[1].value("width"))
+    assert_equal("right", st.children[1].value("float").keyword)
+    assert_equal(10, st.children[1].value("height").length)
+  end
+
+  def test_style_tree_2
+    html_node = Node.new(HTMLNodeType::DIV, {"class" => "test cl"}, [], nil)
+    html_node.add_child(Node.new(HTMLNodeType::A, {"class" => "test"}, [], nil) )
+    html_node.add_child(Node.new(HTMLNodeType::A, {"class" => "cl"}, [], nil) )
+
+    rules = []
+
+    st = StyleTransformer.style_tree(html_node, rules)
+
+    assert_equal(nil, st.value("color"))
+    assert_equal(nil, st.value("width"))
+    assert_equal(nil, st.value("float"))
+    assert_equal(nil, st.value("height"))
+  end
 
 
 end
