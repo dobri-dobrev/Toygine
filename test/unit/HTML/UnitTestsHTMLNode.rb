@@ -18,6 +18,20 @@ class UnitTestsHTMLNode <Test::Unit::TestCase
     assert_equal(HTMLNodeType::A, node.children[0].type)
   end
 
+  def test_id
+    node = Node.new(HTMLNodeType::TEXT, {"id" => "the_id"}, [], "blah")
+    assert_equal("the_id", node.id)
+    node = Node.new(HTMLNodeType::TEXT, {}, [], "blah")
+    assert_equal(nil, node.id)
+  end
+
+  def test_class
+    node = Node.new(HTMLNodeType::TEXT, {"class" => "blah bling"}, [], "blah")
+    assert_equal({"blah" => true, "bling" => true}, node.classes)
+    node = Node.new(HTMLNodeType::TEXT, {}, [], "blah")
+    assert_equal(nil, node.classes)
+  end
+
   def test_to_s
     node = Node.new(HTMLNodeType::TEXT, {}, [], "blah")
     print_string = "text\n"

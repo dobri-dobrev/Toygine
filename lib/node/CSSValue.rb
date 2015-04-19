@@ -1,8 +1,9 @@
 class CSSValue
   attr_accessor :type, :r, :g, :b, :length, :unit, :keyword
-  
+  @opt
   def initialize(t, options)
     @type = t
+    @opt = options
     case @type 
     when CSSValueType::COLORVALUE
       @r, @g, @b = options[:r], options[:g], options [:b]
@@ -13,6 +14,9 @@ class CSSValue
     end
   end
 
+  def clone
+    return CSSValue.new(@type, @opt.clone)
+  end
 end
 
 module CSSValueType

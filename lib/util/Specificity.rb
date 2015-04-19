@@ -17,6 +17,10 @@ class Specificity;
 		return @ta <=> other.ta
 	end
 
+	def eql?(other)
+		return (@id == other.id and @cl == other.cl and @ta == other.ta)
+	end
+
 	def to_s
 		"("+ @id.to_s + ", " + @cl.to_s + ", " + @ta.to_s + ")" 
 	end

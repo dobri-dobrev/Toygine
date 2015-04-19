@@ -10,6 +10,9 @@ require_relative 'node/CSSSelector'
 require_relative 'node/CSSRule'
 require_relative 'node/CSSDeclaration'
 require_relative 'node/CSSValue'
+require_relative 'node/StyleNode'
+require_relative 'transform/StyleTransformer'
+require_relative 'transform/MatchedRule'
 
 
 

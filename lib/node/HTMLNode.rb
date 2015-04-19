@@ -28,18 +28,12 @@ class Node
     end
     @attributes = {}
     @children = []
-    if name.eql? "text"
-      # case text node
-      @text = txt  
-    else
-      # case element node
-      @text = txt
-      if !childr.nil?
-        @children = childr
-      end
-      if !attrs.nil?
-        @attributes = attrs
-      end
+    @text = txt  
+    if !childr.nil?
+      @children = childr
+    end
+    if !attrs.nil?
+      @attributes = attrs
     end
   end
   
@@ -70,6 +64,24 @@ class Node
 
   def print
     print_recursive(0)
+  end
+
+  def id
+    if @attributes["id"]
+      return attributes["id"]
+    else
+      return nil
+    end
+  end
+
+  def classes
+    if @attributes["class"]
+      return_hash = {}
+      @attributes["class"].split(" ").each{ |cl| return_hash[cl] = true}
+      return return_hash
+    else
+      return nil
+    end
   end
 
   def print_recursive(indent)
