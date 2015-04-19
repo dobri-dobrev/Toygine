@@ -25,11 +25,11 @@ class UnitTestsHTMLNode <Test::Unit::TestCase
     assert_equal(nil, node.id)
   end
 
-  def test_class
+  def test_classes
     node = Node.new(HTMLNodeType::TEXT, {"class" => "blah bling"}, [], "blah")
     assert_equal({"blah" => true, "bling" => true}, node.classes)
     node = Node.new(HTMLNodeType::TEXT, {}, [], "blah")
-    assert_equal(nil, node.classes)
+    assert_equal({}, node.classes)
   end
 
   def test_to_s

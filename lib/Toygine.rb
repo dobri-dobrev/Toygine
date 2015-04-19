@@ -21,15 +21,17 @@ def runEngine(htmlFileName)
   html_file_reader = FileReader.new(File.new(htmlFileName, "r"), htmlFileName)
   htmlparser = HTMLParser.new(html_file_reader)
   htmlTree = htmlparser.parse()
-  for css_path in htmlparser.get_css(htmlTree)
+  rule_list = []
+  htmlparser.get_css(htmlTree).each { |css_path|
     path = folder_location + css_path
     cp = CSSParser.new(FileReader.new(File.new(path, "r"), path ))
-    cl = cp.parse()
-    for rule in cl
+    rule_list.concat cp.parse()
+    for rule in rule_list
       puts rule
     end
-  end
-  htmlTree.print()
+    }
+  style_node = StyleTransformer.style_tree(htmlTree, rule_list)
+  style_node.print()
 end
 
 def get_folder_location(htmlFileName)

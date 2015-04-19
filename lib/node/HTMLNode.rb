@@ -43,20 +43,30 @@ class Node
   end
 
   def to_s
-    output_string = @type +"\n"
+    return recursive_to_s(0, "")
+  end
+
+  def recursive_to_s(indent, string)
+    i = 0
+    indent_string = ""
+    while i < indent
+      indent_string += "\t"
+      i += 1
+    end
+    output_string = indent_string + @type +"\n"
     if @type.eql? "text"
-      output_string += "innerText: " + @text + "\n"
+      output_string += indent_string + "innerText: " + @text + "\n"
     end
     #add attributes
     if not @attributes.nil?
       @attributes.each do |key, value|
-        output_string += "attr: " + key + " val: " + value + "\n"
+        output_string += indent_string + "attr: " + key + " val: " + value + "\n"
       end
     end
     #add children
     if self.children.length > 0
       for child in self.children
-        output_string += child.recursive_to_s(indent+1)
+        output_string += child.recursive_to_s(indent+1, output_string)
       end
     end
     return output_string
@@ -75,13 +85,11 @@ class Node
   end
 
   def classes
+    return_hash = {}
     if @attributes["class"]
-      return_hash = {}
-      @attributes["class"].split(" ").each{ |cl| return_hash[cl] = true}
-      return return_hash
-    else
-      return nil
+      @attributes["class"].split(" ").each{ |cl| return_hash[cl] = true}  
     end
+    return return_hash
   end
 
   def print_recursive(indent)

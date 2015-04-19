@@ -24,9 +24,13 @@ class StyleNode
   end
 
   #TODO implement to_s
-  # def to_s
-    
-  # end
+  def to_s
+   return @html_node.to_s()
+  end
+  #TODO implement to_s
+  def print
+    puts @html_node
+  end
 end
 
 module Display
