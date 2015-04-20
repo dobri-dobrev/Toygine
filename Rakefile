@@ -36,15 +36,24 @@ Rake::TestTask.new do |t|
   t.verbose = false
 end
 
+Rake::TestTask.new do |t|
+
+  t.name = "test:unit:layout"
+  t.test_files = FileList['test/unit/layout/UnitTests*.rb']
+  t.verbose = false
+end
+
 task 'test:unit' do
 	puts "UTIL UNIT TESTS"
 	Rake::Task["test:unit:util"].execute
 	puts "CSS UNIT TESTS"
 	Rake::Task["test:unit:css"].execute
-  puts "HTML UNIT TESTS"
-  Rake::Task["test:unit:html"].execute
-  puts "STYLE UNIT TESTS"
+    puts "HTML UNIT TESTS"
+    Rake::Task["test:unit:html"].execute
+    puts "STYLE UNIT TESTS"
 	Rake::Task["test:unit:style"].execute
+	puts "LAYOUT UNIT TESTS"
+	Rake::Task["test:unit:layout"].execute
 end
 
 task 'test:all' do
