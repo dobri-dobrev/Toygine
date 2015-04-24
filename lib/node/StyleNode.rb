@@ -12,12 +12,9 @@ class StyleNode
   end
 
   def display
-    if @specified_values["display"].nil?
-      return Display::INLINE
-    else
-      return @specified_values["display"].keyword
-    end
+    return @specified_values["display"].nil? ? Display::INLINE : @specified_values["display"].keyword
   end
+  
   #return CSSValue
   def value(key)
     return @specified_values[key]

@@ -8,5 +8,12 @@ class UnitTestsLayoutBox <Test::Unit::TestCase
     assert_equal(2, t.box_type)
     assert_equal(3, t.children)
   end
+
+  def test_add_child
+    t = LayoutBox.new(1, 2, [])
+    assert_equal(0, t.children.length)
+    t.add_child(2)
+    assert_equal(1, t.children.length)
+  end
 end
 
