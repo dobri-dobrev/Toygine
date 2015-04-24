@@ -1,6 +1,6 @@
 require 'test/unit'
 require_relative '../../../lib/Toygine.rb'
-#test
+
 class UnitTestsLayoutBox <Test::Unit::TestCase
   def test_initialize
     t = LayoutBox.new(1, 2, 3)
