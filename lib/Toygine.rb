@@ -15,6 +15,7 @@ require_relative 'transform/StyleTransformer'
 require_relative 'transform/MatchedRule'
 require_relative 'transform/LayoutTransformer'
 require_relative 'util/LayoutStructs'
+require_relative 'node/LayoutBox.rb'
 
 
 
