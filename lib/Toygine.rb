@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require_relative 'util/FileReader'
 require_relative 'util/Specificity'
+require_relative 'node/BaseNode'
 
 require_relative 'parse/HTMLParser'
 require_relative 'node/HTMLNode'

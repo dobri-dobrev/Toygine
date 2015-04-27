@@ -34,8 +34,10 @@ class UnitTestsHTMLNode <Test::Unit::TestCase
 
   def test_to_s
     node = Node.new(HTMLNodeType::TEXT, {}, [], "blah")
-    print_string = "text\n"
-    print_string += "innerText: blah\n"
+    print_string = "NODE:\n"
+    print_string += "type: text\n"
+    print_string += "attributes: {}\n"
+    print_string += "text: blah\n"
     assert_equal(print_string, node.to_s)
   end
 end

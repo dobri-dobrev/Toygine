@@ -59,7 +59,7 @@ class StyleTransformer
     vals = self.specified_values(html_node, rules)
     st = StyleNode.new(html_node, vals)
     html_node.children.each { |child|
-      st.add_child(self.style_tree(child, rules))
+      st.add_child(StyleTransformer.style_tree(child, rules))
       }
     return st
   end
