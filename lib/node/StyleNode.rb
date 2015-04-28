@@ -8,7 +8,6 @@ class StyleNode < BaseNode
     @specified_values = vals
     super(nil)
   end
-
   
   def display
     return @specified_values["display"].nil? ? Display::INLINE : @specified_values["display"].keyword
