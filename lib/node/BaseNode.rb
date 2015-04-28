@@ -35,11 +35,12 @@ class BaseNode
   def recursive_to_s(indent)
     i = 0
     indent_string = ""
-    
-    while i < indent
-      indent_string += "\t"
-      i += 1
+    unless indent == 0
+      (0..indent).each{
+        indent_string += "\t"
+      }  
     end
+    
     output_string = indent_string + "NODE:\n"
     self.class.attributes.each { |e| 
       if instance_variable_get("@"+e.to_s).is_a? BaseNode
