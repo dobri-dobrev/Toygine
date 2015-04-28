@@ -1,14 +1,10 @@
-class LayoutBox
+class LayoutBox < BaseNode
   attr_accessor :dimensions, :box_type, :children
 
   def initialize(dim, type, chil)
     @dimensions = dim
     @box_type = type
     @children = chil
-  end
-
-  def add_child(child)
-    @children << child
   end
 end
 
