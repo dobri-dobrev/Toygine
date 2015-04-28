@@ -4,7 +4,8 @@ class LayoutBox < BaseNode
   def initialize(dim, type, s_n, chil)
     @dimensions = dim
     @box_type = type
-    @style_node = s_n
+    @style_node = s_n.clone()
+    @style_node.reset_children()
     @children = chil
   end
 end
