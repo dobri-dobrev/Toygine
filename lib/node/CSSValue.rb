@@ -1,6 +1,5 @@
 class CSSValue
   attr_accessor :type, :r, :g, :b, :length, :unit, :keyword
-  @opt
   def initialize(t, options)
     @type = t
     @opt = options

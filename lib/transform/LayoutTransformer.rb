@@ -9,14 +9,14 @@ class LayoutTransformer
     when Display::NONE
       raise "managerial node has display none"
     end
-    style_node.children.each { |child|
+    style_node.children().each { |child|
       case child.display()
       when Display::INLINE
         root.get_inline_container().add_child(self.build_layout_tree(child))
       when Display::BLOCK
         root.add_child(self.build_layout_tree(child))
       when Display::NONE
-        
+
       end
     }
     return root

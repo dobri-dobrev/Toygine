@@ -6,7 +6,7 @@ class BaseNode
   end
   
   def initialize(c)
-    @children = !c.nil? ? c : []
+    @children = c.nil? ? [] : c
   end
   def self.attributes
     @attributes

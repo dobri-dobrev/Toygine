@@ -10,13 +10,13 @@ class LayoutBox < BaseNode
     	@style_node = s_n.clone()
     	@style_node.reset_children()
     end
-    @children = chil
+    super(chil)
   end
 
   def get_inline_container
   	case @box_type
   	when BoxType::BLOCK_NODE
-  		if self.children().last().box_type.eql? BoxType::ANONYMOUS_BLOCK
+  		if self.children().length > 0 and self.children().last().box_type.eql? BoxType::ANONYMOUS_BLOCK
   			return self.children().last()
   		else
   			self.add_child(LayoutBox.new(nil, BoxType::ANONYMOUS_BLOCK, nil, nil))
