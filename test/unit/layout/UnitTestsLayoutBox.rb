@@ -37,6 +37,12 @@ class UnitTestsLayoutBox <Test::Unit::TestCase
     t2 = t.get_inline_container()
     assert_equal(2, t.children.length)
     assert_equal(BoxType::ANONYMOUS_BLOCK, t2.box_type)
+
+    t = LayoutBox.new("test", BoxType::BLOCK_NODE, sn, [])
+    t.add_child(LayoutBox.new(nil, BoxType::ANONYMOUS_BLOCK, sn, []))
+    t2 = t.get_inline_container()
+    assert_equal(1, t.children.length)
+    assert_equal(BoxType::ANONYMOUS_BLOCK, t2.box_type)
   end
 end
 
