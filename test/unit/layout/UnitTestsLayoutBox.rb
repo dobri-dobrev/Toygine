@@ -44,5 +44,12 @@ class UnitTestsLayoutBox <Test::Unit::TestCase
     assert_equal(1, t.children.length)
     assert_equal(BoxType::ANONYMOUS_BLOCK, t2.box_type)
   end
+
+  def test_layout
+    #TODO implement real test after layout_block is implemented
+    sn = StyleNode.new(Node.new(HTMLNodeType::HTML, {}, [], "blah"), {})
+    t = LayoutBox.new(1, BoxType::BLOCK_NODE, sn, 4)
+    assert_equal("t", t.layout(""))
+  end
 end
 

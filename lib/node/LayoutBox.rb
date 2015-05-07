@@ -13,6 +13,23 @@ class LayoutBox < BaseNode
     super(chil)
   end
 
+  def layout(containing_block)
+    case @box_type
+    when BoxType::BLOCK_NODE
+      return self.layout_block(containing_block)
+    when BoxType::INLINE_NODE
+      raise "Unsupported layout type" #TODO: implement this
+    when BoxType::ANONYMOUS_BLOCK
+      raise "Unsupported layout type"  #TODO: implement this
+    end
+  end
+
+  def layout_block(containing_block)
+    #TODO implement
+    puts "test"
+    "t"
+  end
+
   def get_inline_container
   	case @box_type
   	when BoxType::BLOCK_NODE

@@ -1,6 +1,5 @@
 class LayoutTransformer
   def self.build_layout_tree(style_node)
-    root = ""
     case style_node.display()
     when Display::INLINE
       root = LayoutBox.new(nil, BoxType::INLINE_NODE, style_node, [])
