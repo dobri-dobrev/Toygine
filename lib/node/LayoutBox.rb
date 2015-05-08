@@ -45,6 +45,11 @@ class LayoutBox < BaseNode
   		return self
   	end
   end
+
+  def calculate_block_width
+    # total = 0
+    # [margin_left, margin_right, border_left, border_right, padding_left, padding_right].each { |e| total += e.to_px()}
+  end
 end
 
 module BoxType

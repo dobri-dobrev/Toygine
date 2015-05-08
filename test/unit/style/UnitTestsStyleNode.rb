@@ -35,5 +35,17 @@ class UnitTestsStyleNode <Test::Unit::TestCase
     assert_equal(nil, style_node.value("height"))
   end
 
+  def test_lookup
+    html_node = Node.new(HTMLNodeType::IMG, {}, [], nil)
+    style_node = StyleNode.new(html_node, {"width" => CSSValue.new(CSSValueType::LENGTH, {:length => 10, :unit => "pt"})})
+    default = CSSValue.new(CSSValueType::LENGTH, {:length => 0, :unit => "px"})
+    v = style_node.lookup("blah", "bl", default)
+    assert_equal(0, v.length)
+    v = style_node.lookup("blah", "width", default)
+    assert_equal(10, v.length)
+    v = style_node.lookup("width", "wwwwidth", default)
+    assert_equal(10, v.length)
+  end
+
 end
 

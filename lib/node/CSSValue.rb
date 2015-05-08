@@ -13,6 +13,14 @@ class CSSValue
     end
   end
 
+  def to_px
+    if @type == CSSValueType::LENGTH
+      return @length #implement unit conversions
+    else
+      return 0.0
+    end
+  end
+
   def clone
     return CSSValue.new(@type, @opt.clone)
   end

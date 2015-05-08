@@ -17,6 +17,16 @@ class StyleNode < BaseNode
   def value(key)
     return @specified_values[key]
   end
+
+  def lookup(name, fallback_name, default)
+    if @specified_values[name]
+      return @specified_values[name]
+    end
+    if @specified_values[fallback_name]
+      return @specified_values[fallback_name]
+    end
+    return default
+  end
 end
 
 module Display
