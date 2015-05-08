@@ -46,9 +46,80 @@ class LayoutBox < BaseNode
   	end
   end
 
-  def calculate_block_width
-    # total = 0
-    # [margin_left, margin_right, border_left, border_right, padding_left, padding_right].each { |e| total += e.to_px()}
+  def calculate_block_width(containing_block)
+    zero = CSSValue.new(CSSValueType::LENGTH, {:length => 0, :unit => "px"})
+    width = @style_node.value("width")
+
+    margin_left = @style_node.lookup("margin-left", "margin", zero)
+    margin_right = @style_node.lookup("margin-right", "margin", zero)
+
+    border_left = @style_node.lookup("border-left-width", "border-width", zero)
+    border_right = @style_node.lookup("border-right-width", "border-width", zero)
+
+    padding_left = @style_node.lookup("padding-left", "padding", zero)
+    padding_right = @style_node.lookup("padding-right", "padding", zero)
+    
+    total = 0
+    [margin_left, margin_right, border_left, border_right, padding_left, padding_right].each { |e| total += e.to_px()}
+
+    if !(width.type.eql? CSSValueType::KEYWORD and width.keyword.eql? "auto") and total > containing_block.content.width
+      if margin_left.type.eql? CSSValueType::KEYWORD and margin_left.keyword.eql? "auto"
+        margin_left = CSSValue.new(CSSValueType::LENGTH, {:length => 0, :unit => "px"})
+      end
+      if margin_right.type.eql? CSSValueType::KEYWORD and margin_right.keyword.eql? "auto"
+        margin_right = CSSValue.new(CSSValueType::LENGTH, {:length => 0, :unit => "px"})
+      end
+    end
+
+    underflow = containing_block.content.width - total
+
+    mla = (margin_left.type.eql? CSSValueType::KEYWORD and margin_left.keyword.eql? "auto")
+    mra = (margin_right.type.eql? CSSValueType::KEYWORD and margin_right.keyword.eql? "auto")
+    wa = (width.type.eql? CSSValueType::KEYWORD and width.keyword.eql? "auto")
+
+    if !wa and !mla and !mra
+      margin_right = CSSValue.new(CSSValueType::LENGTH, {:length => margin_right.to_px() + underflow, :unit => "px"})
+    end
+
+    if !wa and !mla and mra
+      margin_right = CSSValue.new(CSSValueType::LENGTH, {:length => underflow, :unit => "px"})
+    end
+
+    if !wa and mla and !mra
+      margin_left = CSSValue.new(CSSValueType::LENGTH, {:length => underflow, :unit => "px"})
+    end
+
+    if wa
+      if mla
+        margin_left = CSSValue.new(CSSValueType::LENGTH, {:length => 0, :unit => "px"})
+      end
+      if mra
+        margin_right = CSSValue.new(CSSValueType::LENGTH, {:length => 0, :unit => "px"})
+      end
+      if underflow >= 0
+        width = CSSValue.new(CSSValueType::LENGTH, {:length => underflow, :unit => "px"})
+      else
+        width = CSSValue.new(CSSValueType::LENGTH, {:length => 0, :unit => "px"})
+        margin_right = CSSValue.new(CSSValueType::LENGTH, {:length => margin_right.to_px() + underflow, :unit => "px"})
+      end
+    end
+
+    if !wa and mla and mra
+      margin_right = CSSValue.new(CSSValueType::LENGTH, {:length => underflow/2, :unit => "px"})
+      margin_left = CSSValue.new(CSSValueType::LENGTH, {:length => underflow/2, :unit => "px"})
+    end
+
+    @dimensions = Dimensions.new(Rect.new(0,0,0,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0))
+    @dimensions.content.width = width.to_px()
+
+    @dimensions.padding.left = padding_left.to_px()
+    @dimensions.padding.right = padding_right.to_px()
+
+    @dimensions.border.left = border_left.to_px()
+    @dimensions.border.right = border_right.to_px()
+
+    @dimensions.margin.left = margin_left.to_px()
+    @dimensions.margin.right = margin_right.to_px()
   end
 end
 
