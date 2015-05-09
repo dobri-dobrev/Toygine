@@ -53,9 +53,10 @@ class UnitTestsLayoutBox <Test::Unit::TestCase
   end
 
   def test_calculate_block_width
+    c_b = Dimensions.new(Rect.new(0,0,30,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0))
+
     sn = StyleNode.new(Node.new(HTMLNodeType::HTML, {}, [], "blah"), {})
     t = LayoutBox.new(nil, BoxType::BLOCK_NODE, sn, [])
-    c_b = Dimensions.new(Rect.new(0,0,30,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0))
     t.calculate_block_width(c_b)
     assert_equal(0, t.dimensions.content.width)
 
@@ -69,6 +70,15 @@ class UnitTestsLayoutBox <Test::Unit::TestCase
     t.calculate_block_width(c_b)
     assert_equal(40, t.dimensions.content.width)
     assert_equal(-10, t.dimensions.margin.right)
+
+    vals = {"margin-left" => CSSValue.new(CSSValueType::KEYWORD, {:word => "auto"})}
+    vals["width"] = CSSValue.new(CSSValueType::LENGTH, {:length => 40, :unit => "px"})
+    sn = StyleNode.new(Node.new(HTMLNodeType::HTML, {}, [], "blah"), vals)
+    t = LayoutBox.new(nil, BoxType::BLOCK_NODE, sn, [])
+    t.calculate_block_width(c_b)
+    assert_equal(40, t.dimensions.content.width)
+    assert_equal(-10, t.dimensions.margin.right)
+    assert_equal(0, t.dimensions.margin.left)
   end
 end
 
