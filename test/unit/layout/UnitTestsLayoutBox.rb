@@ -58,6 +58,17 @@ class UnitTestsLayoutBox <Test::Unit::TestCase
     c_b = Dimensions.new(Rect.new(0,0,30,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0))
     t.calculate_block_width(c_b)
     assert_equal(0, t.dimensions.content.width)
+
+    sn = StyleNode.new(Node.new(HTMLNodeType::HTML, {}, [], "blah"), {"width" => CSSValue.new(CSSValueType::LENGTH, {:length => 20, :unit => "px"})})
+    t = LayoutBox.new(nil, BoxType::BLOCK_NODE, sn, [])
+    t.calculate_block_width(c_b)
+    assert_equal(20, t.dimensions.content.width)
+
+    sn = StyleNode.new(Node.new(HTMLNodeType::HTML, {}, [], "blah"), {"width" => CSSValue.new(CSSValueType::LENGTH, {:length => 40, :unit => "px"})})
+    t = LayoutBox.new(nil, BoxType::BLOCK_NODE, sn, [])
+    t.calculate_block_width(c_b)
+    assert_equal(40, t.dimensions.content.width)
+    assert_equal(-10, t.dimensions.margin.right)
   end
 end
 

@@ -60,7 +60,7 @@ class LayoutBox < BaseNode
     padding_right = @style_node.lookup("padding-right", "padding", zero)
     
     total = 0
-    [margin_left, margin_right, border_left, border_right, padding_left, padding_right].each { |e| total += e.to_px()}
+    [margin_left, margin_right, border_left, border_right, padding_left, padding_right, width].each { |e| total += e.to_px()}
 
     if !(width.type.eql? CSSValueType::KEYWORD and width.keyword.eql? "auto") and total > containing_block.content.width
       if margin_left.type.eql? CSSValueType::KEYWORD and margin_left.keyword.eql? "auto"
@@ -109,7 +109,9 @@ class LayoutBox < BaseNode
       margin_left = CSSValue.new(CSSValueType::LENGTH, {:length => underflow/2, :unit => "px"})
     end
 
-    @dimensions = Dimensions.new(Rect.new(0,0,0,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0))
+    if @dimensions.nil? 
+      @dimensions = Dimensions.new(Rect.new(0,0,0,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0))
+    end
     @dimensions.content.width = width.to_px()
 
     @dimensions.padding.left = padding_left.to_px()
