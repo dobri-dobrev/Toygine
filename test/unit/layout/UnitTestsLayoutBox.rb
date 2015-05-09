@@ -51,5 +51,13 @@ class UnitTestsLayoutBox <Test::Unit::TestCase
     t = LayoutBox.new(1, BoxType::BLOCK_NODE, sn, 4)
     assert_equal("t", t.layout(""))
   end
+
+  def test_calculate_block_width
+    sn = StyleNode.new(Node.new(HTMLNodeType::HTML, {}, [], "blah"), {})
+    t = LayoutBox.new(nil, BoxType::BLOCK_NODE, sn, [])
+    c_b = Dimensions.new(Rect.new(0,0,30,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0), EdgeSizes.new(0,0,0,0))
+    t.calculate_block_width(c_b)
+    assert_equal(0, t.dimensions.content.width)
+  end
 end
 

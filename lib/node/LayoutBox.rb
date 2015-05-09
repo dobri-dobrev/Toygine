@@ -48,7 +48,7 @@ class LayoutBox < BaseNode
 
   def calculate_block_width(containing_block)
     zero = CSSValue.new(CSSValueType::LENGTH, {:length => 0, :unit => "px"})
-    width = @style_node.value("width")
+    width = @style_node.value("width")|| CSSValue.new(CSSValueType::LENGTH, {:length => 0, :unit => "px"})
 
     margin_left = @style_node.lookup("margin-left", "margin", zero)
     margin_right = @style_node.lookup("margin-right", "margin", zero)
