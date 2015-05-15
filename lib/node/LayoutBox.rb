@@ -123,6 +123,26 @@ class LayoutBox < BaseNode
     @dimensions.margin.left = margin_left.to_px()
     @dimensions.margin.right = margin_right.to_px()
   end
+
+  def calculate_position(containing_block)
+    zero = CSSValue.new(CSSValueType::LENGTH, {:length => 0, :unit => "px"})
+    @dimensions.margin.top = @style_node.lookup("margin-top", "margin", zero)
+    @dimensions.margin.bottom = @style_node.lookup("margin-bottom", "margin", zero)
+
+    @dimensions.border.top = @style_node.lookup("border-top-width", "border-width", zero)
+    @dimensions.border.bottom = @style_node.lookup("border-bottom-width", "border-width", zero)
+
+    @dimensions.padding.top = @style_node.lookup("padding-top", "padding", zero)
+    @dimensions.padding.bottom = @style_node.lookup("padding-bottom", "padding", zero)
+
+    @dimensions.content.x = @dimensions.margin.left + @dimensions.padding.left + @dimensions.border.left + containing_block.content.x
+    @dimensions.content.y = @dimensions.margin.top + @dimensions.padding.top + @dimensions.border.top + containing_block.content.height + containing_block.content.y
+
+  end
+
+  def layout_block_children(containing_block)
+    @children.each { |e| e.layout(@dimensions)  }
+  end
 end
 
 module BoxType
