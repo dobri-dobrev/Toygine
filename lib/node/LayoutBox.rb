@@ -141,8 +141,13 @@ class LayoutBox < BaseNode
   end
 
   def layout_block_children(containing_block)
-    @children.each { |e| e.layout(@dimensions)  }
+    @children.each { |child| 
+      child.layout(@dimensions)  
+      # TODO missing step @dimensions.content.height += 
+    }
   end
+
+  
 end
 
 module BoxType

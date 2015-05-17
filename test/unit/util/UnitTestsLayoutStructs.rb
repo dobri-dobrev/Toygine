@@ -12,19 +12,29 @@ class UnitTestsLayoutStructs <Test::Unit::TestCase
   end
 
   def test_edge_sizes
-    rect = EdgeSizes.new(2, 3, 4, 5)
-    assert_equal(2, rect.left)
-    assert_equal(3, rect.right)
-    assert_equal(4, rect.top)
-    assert_equal(5, rect.bottom)
+    edge = EdgeSizes.new(2, 3, 4, 5)
+    assert_equal(2, edge.left)
+    assert_equal(3, edge.right)
+    assert_equal(4, edge.top)
+    assert_equal(5, edge.bottom)
   end
 
   def test_dimensions
-    rect = Dimensions.new(Rect.new(1,2,3,4) , 3, 4, 5)
-    assert_equal(1, rect.content.x)
-    assert_equal(3, rect.padding)
-    assert_equal(4, rect.border)
-    assert_equal(5, rect.margin)
+    dimensions = Dimensions.new(Rect.new(1,2,3,4) , 3, 4, 5)
+    assert_equal(1, dimensions.content.x)
+    assert_equal(3, dimensions.padding)
+    assert_equal(4, dimensions.border)
+    assert_equal(5, dimensions.margin)
+  end
+
+  def test_expanded_by
+    rect = Rect.new(3, 4, 4, 5)
+    edge = EdgeSizes.new(2, 3, 3, 5)
+    rect.expanded_by(edge)
+    assert_equal(1, rect.x)
+    assert_equal(1, rect.y)
+    assert_equal(9, rect.width)
+    assert_equal(13, rect.height)
   end
 end
 
