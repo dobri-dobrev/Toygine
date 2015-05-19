@@ -143,7 +143,8 @@ class LayoutBox < BaseNode
   def layout_block_children(containing_block)
     @children.each { |child| 
       child.layout(@dimensions)  
-      # TODO missing step @dimensions.content.height += 
+      @dimensions.content.height += child.dimensions.margin_box().height
+      # TODO write martgin_box in dimesntions
     }
   end
 

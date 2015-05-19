@@ -30,11 +30,11 @@ class UnitTestsLayoutStructs <Test::Unit::TestCase
   def test_expanded_by
     rect = Rect.new(3, 4, 4, 5)
     edge = EdgeSizes.new(2, 3, 3, 5)
-    rect.expanded_by(edge)
-    assert_equal(1, rect.x)
-    assert_equal(1, rect.y)
-    assert_equal(9, rect.width)
-    assert_equal(13, rect.height)
+    rect2 = rect.expanded_by(edge)
+    assert_equal(1, rect2.x)
+    assert_equal(1, rect2.y)
+    assert_equal(9, rect2.width)
+    assert_equal(13, rect2.height)
   end
 end
 
