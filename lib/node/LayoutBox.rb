@@ -144,7 +144,6 @@ class LayoutBox < BaseNode
     @children.each { |child| 
       child.layout(@dimensions)  
       @dimensions.content.height += child.dimensions.margin_box().height
-      # TODO write martgin_box in dimesntions
     }
   end
 
