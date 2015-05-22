@@ -147,6 +147,12 @@ class LayoutBox < BaseNode
     }
   end
 
+  def calculate_block_height
+    if @style_node.value("height")
+      @dimensions.content.height = @style_node.value("height")
+    end
+  end
+
   
 end
 
